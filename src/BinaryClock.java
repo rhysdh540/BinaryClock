@@ -56,5 +56,4 @@ public class BinaryClock {
     public String getSecond(){
         return Integer.toString(second).length()==1 ? "0" + second : Integer.toString(second);
     }
-
 }

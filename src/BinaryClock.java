@@ -1,13 +1,8 @@
 import java.time.LocalTime;
 
-import lombok.Getter;
-
 public class BinaryClock {
-    @Getter
     private boolean[] seconds = new boolean[6];
-    @Getter
     private boolean[] minutes = new boolean[6];
-    @Getter
     private boolean[] hours = new boolean[6];
     private int second;
     private int minute;
@@ -55,5 +50,14 @@ public class BinaryClock {
     }
     public String getSecond(){
         return Integer.toString(second).length()==1 ? "0" + second : Integer.toString(second);
+    }
+    public boolean[] getSeconds(){
+        return seconds;
+    }
+    public boolean[] getMinutes(){
+        return minutes;
+    }
+    public boolean[] getHours(){
+        return hours;
     }
 }

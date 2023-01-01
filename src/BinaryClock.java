@@ -1,9 +1,13 @@
 import java.time.LocalTime;
-import java.time.ZoneId;
+
+import lombok.Getter;
 
 public class BinaryClock {
+    @Getter
     private boolean[] seconds = new boolean[6];
+    @Getter
     private boolean[] minutes = new boolean[6];
+    @Getter
     private boolean[] hours = new boolean[6];
     private int second;
     private int minute;
@@ -34,7 +38,7 @@ public class BinaryClock {
         return s.toString();
     }
     private static LocalTime getTime(){
-        return LocalTime.now(ZoneId.of("EST"));
+        return LocalTime.now(java.time.ZoneId.of("America/New_York"));
     }
     public void tick(){
         LocalTime time = getTime();
@@ -43,4 +47,14 @@ public class BinaryClock {
         hour = time.getHour();
         update();
     }
+    public String getHour(){
+        return Integer.toString(hour).length()==1 ? "0" + hour : Integer.toString(hour);
+    }
+    public String getMinute(){
+        return Integer.toString(minute).length()==1 ? "0" + minute : Integer.toString(minute);
+    }
+    public String getSecond(){
+        return Integer.toString(second).length()==1 ? "0" + second : Integer.toString(second);
+    }
+
 }

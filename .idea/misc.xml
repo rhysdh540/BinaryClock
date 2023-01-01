@@ -4,6 +4,11 @@
     <option name="show" value="ASK" />
     <option name="description" value="" />
   </component>
+  <component name="EntryPointsManager">
+    <writeAnnotations>
+      <writeAnnotation name="lombok.Getter" />
+    </writeAnnotations>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_19" default="true" project-jdk-name="zulu-19" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>

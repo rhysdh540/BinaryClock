@@ -15,11 +15,21 @@ public class BinaryClock {
             hours[i] = false;
         }
     }
+
+    /**
+     * Updates the {@code boolean[]} variables to use the values provided by the {@code int} variables.
+     */
     private void update(){
         seconds = toBinaryArray(toBinary(second).toCharArray());
         minutes = toBinaryArray(toBinary(minute).toCharArray());
         hours = toBinaryArray(toBinary(hour).toCharArray());
     }
+
+    /**
+     * Converts a number into a String of 1's and 0's of length 6.
+     * @param n the number to convert
+     * @return a String representation of the number in binary
+     */
     public static String toBinary(int n){
         StringBuilder s = new StringBuilder();
         while(n > 0){
@@ -30,9 +40,18 @@ public class BinaryClock {
             s.insert(0, "0");
         return s.toString();
     }
+
+    /**
+     * Gets the current time in New York.
+     * @return the current time in New York.
+     */
     private static LocalTime getTime(){
         return LocalTime.now(java.time.ZoneId.of("America/New_York"));
     }
+
+    /**
+     * Updates the clock to the current time based on the {@link BinaryClock#getTime()} method.
+     */
     public void tick(){
         LocalTime time = getTime();
         second = time.getSecond();
@@ -40,6 +59,7 @@ public class BinaryClock {
         hour = time.getHour();
         update();
     }
+
     public static boolean[] toBinaryArray(char[] n){
         boolean[] b = new boolean[n.length];
         for(int i = 0; i < n.length; i++)

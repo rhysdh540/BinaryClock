@@ -57,7 +57,7 @@ public class Panel extends JPanel{
             else g.drawOval(getWidth() - 75, getHeight() - 40, 30, 30);
             g.drawString("PM", getWidth() - 40, getHeight() - 20);
         }
-        // recursively (i think, this method is weird) update the screen
+        // Update the screen
         repaint();
     }
 
@@ -94,6 +94,7 @@ public class Panel extends JPanel{
         }
         return sb.toString();
     }
+    // toggles and getters
     public void toggleDecimal(){
         showDecimal = !showDecimal;
     }
@@ -110,6 +111,7 @@ public class Panel extends JPanel{
     public void toggleClock12hr(){
         clock12hr = !clock12hr;
     }
+
     public boolean isDecimalShown(){
         return showDecimal;
     }

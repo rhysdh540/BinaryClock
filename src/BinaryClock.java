@@ -16,13 +16,11 @@ public class BinaryClock {
         }
     }
     private void update(){
-        for(int i = 0; i < 6; i++){
-            seconds[i] = toBinary(second).toCharArray()[i] == '1';
-            minutes[i] = toBinary(minute).toCharArray()[i] == '1';
-            hours[i] = toBinary(hour).toCharArray()[i] == '1';
-        }
+        seconds = toBinaryArray(toBinary(second).toCharArray());
+        minutes = toBinaryArray(toBinary(minute).toCharArray());
+        hours = toBinaryArray(toBinary(hour).toCharArray());
     }
-    private static String toBinary(int n){
+    public static String toBinary(int n){
         StringBuilder s = new StringBuilder();
         while(n > 0){
             s.insert(0, n % 2);
@@ -34,7 +32,7 @@ public class BinaryClock {
     }
     private static LocalTime getTime(){
         return LocalTime.now(java.time.ZoneId.of("America/New_York"));
-    }
+    } // America/New_York
     public void tick(){
         LocalTime time = getTime();
         second = time.getSecond();
@@ -42,14 +40,21 @@ public class BinaryClock {
         hour = time.getHour();
         update();
     }
-    public String getHour(){
-        return Integer.toString(hour).length()==1 ? "0" + hour : Integer.toString(hour);
+    public static boolean[] toBinaryArray(char[] n){
+        boolean[] b = new boolean[n.length];
+        for(int i = 0; i < n.length; i++)
+            b[i] = n[i] == '1';
+
+        return b;
     }
-    public String getMinute(){
-        return Integer.toString(minute).length()==1 ? "0" + minute : Integer.toString(minute);
+    public int getHour(){
+        return hour;
     }
-    public String getSecond(){
-        return Integer.toString(second).length()==1 ? "0" + second : Integer.toString(second);
+    public int getMinute(){
+        return minute;
+    }
+    public int getSecond(){
+        return second;
     }
     public boolean[] getSeconds(){
         return seconds;

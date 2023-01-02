@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.event.*;
 import java.awt.*;
 
 public class GUI {
@@ -15,8 +14,9 @@ public class GUI {
         }
         Panel panel = new Panel();
 
-        // this is all for adding the menu bar toggle for the decimal clock
+        // this is all for adding the menu bar toggles
         JMenuBar mb = new JMenuBar();
+
 
         JMenuItem toggleDecimalClock = new JMenuItem("Show/Hide Decimal Clock");
         toggleDecimalClock.addActionListener(e -> panel.showDecimal = !panel.showDecimal);
@@ -33,12 +33,17 @@ public class GUI {
         JMenuItem flipDecimal = new JMenuItem("Flip Decimal Clock");
         flipDecimal.addActionListener(e -> panel.flipDecimal = !panel.flipDecimal);
 
+        JMenuItem clock12hr = new JMenuItem("12/24 Hour Clock");
+        clock12hr.addActionListener(e -> panel.clock12hr = !panel.clock12hr);
+
         JMenu clockMenu = new JMenu("Clock");
         JMenu appearanceMenu = new JMenu("Appearance");
+
         appearanceMenu.add(toggleDecimalClock);
         appearanceMenu.add(lightdark);
-        clockMenu.add(flipBinary);
-        clockMenu.add(flipDecimal);
+        appearanceMenu.add(flipBinary);
+        appearanceMenu.add(flipDecimal);
+        clockMenu.add(clock12hr);
 
         mb.add(appearanceMenu);
         mb.add(clockMenu);

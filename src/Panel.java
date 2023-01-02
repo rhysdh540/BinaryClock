@@ -2,12 +2,17 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Panel extends JPanel{
-    boolean showDecimal = false;
-    boolean darkMode = true;
-    boolean flipBinary = false;
-    boolean flipDecimal = false;
-    boolean clock12hr = false;
+    // preferences for how the clock is displayed
+    private boolean showDecimal = PrefsSaver.getShowDecimal();
+    private boolean darkMode = PrefsSaver.getDarkMode();
+    private boolean flipBinary = PrefsSaver.getFlipBinary();
+    private boolean flipDecimal = PrefsSaver.getFlipDecimal();
+    private boolean clock12hr = PrefsSaver.getClock12hr();
     private boolean pm = false;
+
+    /**
+     * the clock
+     */
     private BinaryClock clock = new BinaryClock();
     public Panel(){
         setBackground(darkMode ? Color.black : Color.white);
@@ -19,10 +24,14 @@ public class Panel extends JPanel{
         g.setColor(darkMode ? Color.white : Color.black);
         g.setFont(new Font("SF Pro Display", Font.PLAIN, 20));
 
-        clock.tick(); // to remove the delay on the first tick
-        if(showDecimal) { // draw the decimal clock
+        clock.tick(); // update the clock
+        if(showDecimal) { // draw the decimal clock (if applicable)
+            // decides how much to offset the clock
+            int amount = (flipDecimal ? getWidth() - (clock12hr ? (makeClock().length() == 11 ? 135 : 125) : 105) : 10);
+            // draw the clock in a fixed-width font to save me from endless migraines
             g.setFont(new Font("JetBrains Mono NL", Font.PLAIN, 20));
-            g.drawString(makeClock(), (flipDecimal ? getWidth() - (clock12hr ? (makeClock().length() == 11 ? 135 : 125) : 105) : 10) /* that was just to decide how much offset to put the clock on if it is right-aligned */, 20);
+            g.drawString(makeClock(), amount, 20);
+            // reset the font
             g.setFont(new Font("SF Pro Display", Font.PLAIN, 20));
         }
 
@@ -48,8 +57,14 @@ public class Panel extends JPanel{
             else g.drawOval(getWidth() - 75, getHeight() - 40, 30, 30);
             g.drawString("PM", getWidth() - 40, getHeight() - 20);
         }
+        // recursively (i think this method is weird) update the screen
         repaint();
     }
+
+    /**
+     * Returns a String representation of the current time.
+     * @return a String representation of the current time.
+     */
     public String makeClock(){
         boolean pm = false;
         StringBuilder sb = new StringBuilder();
@@ -78,5 +93,36 @@ public class Panel extends JPanel{
             sb.append(s);
         }
         return sb.toString();
+    }
+    public void toggleDecimal(){
+        showDecimal = !showDecimal;
+    }
+    public void toggleDarkMode(){
+        darkMode = !darkMode;
+        setBackground(darkMode ? Color.black : Color.white);
+    }
+    public void toggleBinaryFlip(){
+        flipBinary = !flipBinary;
+    }
+    public void toggleDecimalFlip(){
+        flipDecimal = !flipDecimal;
+    }
+    public void toggleClock12hr(){
+        clock12hr = !clock12hr;
+    }
+    public boolean isDecimalShown(){
+        return showDecimal;
+    }
+    public boolean isDarkMode(){
+        return darkMode;
+    }
+    public boolean isBinaryFlipped(){
+        return flipBinary;
+    }
+    public boolean isDecimalFlipped(){
+        return flipDecimal;
+    }
+    public boolean isClock12hr(){
+        return clock12hr;
     }
 }

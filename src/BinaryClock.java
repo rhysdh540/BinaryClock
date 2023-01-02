@@ -32,7 +32,7 @@ public class BinaryClock {
     }
     private static LocalTime getTime(){
         return LocalTime.now(java.time.ZoneId.of("America/New_York"));
-    } // America/New_York
+    }
     public void tick(){
         LocalTime time = getTime();
         second = time.getSecond();

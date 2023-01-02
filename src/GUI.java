@@ -21,14 +21,10 @@ public class GUI {
         JMenuItem toggleDecimalClock = new JMenuItem("Show/Hide Decimal Clock");
         toggleDecimalClock.addActionListener(e -> panel.showDecimal = !panel.showDecimal);
 
-        JMenu appearance = new JMenu("Light/Dark Mode");
-        appearance.addMenuListener(new MenuListener() {
-            @Override public void menuSelected(MenuEvent e) {
-                panel.darkMode = !panel.darkMode;
-                panel.setBackground(panel.darkMode ? Color.black : Color.white);
-            }
-            @Override public void menuDeselected(MenuEvent e) {}
-            @Override public void menuCanceled(MenuEvent e) {}
+        JMenuItem lightdark = new JMenuItem("Light/Dark Mode");
+        lightdark.addActionListener(e -> {
+            panel.darkMode = !panel.darkMode;
+            panel.setBackground(panel.darkMode ? Color.black : Color.white);
         });
 
         JMenuItem flipBinary = new JMenuItem("Flip Binary Clock");
@@ -38,12 +34,14 @@ public class GUI {
         flipDecimal.addActionListener(e -> panel.flipDecimal = !panel.flipDecimal);
 
         JMenu clockMenu = new JMenu("Clock");
-        clockMenu.add(toggleDecimalClock);
+        JMenu appearanceMenu = new JMenu("Appearance");
+        appearanceMenu.add(toggleDecimalClock);
+        appearanceMenu.add(lightdark);
         clockMenu.add(flipBinary);
         clockMenu.add(flipDecimal);
 
+        mb.add(appearanceMenu);
         mb.add(clockMenu);
-        mb.add(appearance);
         gooey.setJMenuBar(mb);
 
         // stuff that must be done (or else)

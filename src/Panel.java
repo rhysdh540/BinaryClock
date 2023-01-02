@@ -66,17 +66,13 @@ public class Panel extends JPanel{
      * @return a String representation of the current time.
      */
     public String makeClock(){
-        boolean pm = false;
         StringBuilder sb = new StringBuilder();
         int h = clock.getHour();
         int m = clock.getMinute();
         int s = clock.getSecond();
 
         if(clock12hr){
-            if(h>12){
-                h-=12;
-                pm = true;
-            }
+            if(pm) h -= 12;
             sb.append(h).append(":");
             if(m<10) sb.append("0");
             sb.append(m).append(":");

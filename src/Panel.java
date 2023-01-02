@@ -6,7 +6,7 @@ public class Panel extends JPanel{
     boolean darkMode = true;
     boolean flipBinary = false;
     boolean flipDecimal = false;
-    boolean clock12hr = true;
+    boolean clock12hr = false;
     private boolean pm = false;
     private BinaryClock clock = new BinaryClock();
     public Panel(){
@@ -46,7 +46,7 @@ public class Panel extends JPanel{
         if(clock12hr) { // add the AM/PM indicator
             if(pm) g.fillOval(getWidth() - 75, getHeight() - 40, 30, 30);
             else g.drawOval(getWidth() - 75, getHeight() - 40, 30, 30);
-            g.drawString(pm ? "PM" : "AM", getWidth() - 40, getHeight() - 20);
+            g.drawString("PM", getWidth() - 40, getHeight() - 20);
         }
         repaint();
     }

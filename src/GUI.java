@@ -17,23 +17,22 @@ public class GUI {
         // this is all for adding the menu bar toggles
         JMenuBar mb = new JMenuBar();
 
-
-        JMenuItem toggleDecimalClock = new JMenuItem("Show/Hide Decimal Clock");
+        JCheckBoxMenuItem toggleDecimalClock = new JCheckBoxMenuItem("Show Decimal Clock", panel.showDecimal);
         toggleDecimalClock.addActionListener(e -> panel.showDecimal = !panel.showDecimal);
 
-        JMenuItem lightdark = new JMenuItem("Light/Dark Mode");
+        JCheckBoxMenuItem lightdark = new JCheckBoxMenuItem("Dark Mode", panel.darkMode);
         lightdark.addActionListener(e -> {
             panel.darkMode = !panel.darkMode;
-            panel.setBackground(panel.darkMode ? Color.black : Color.white);
+            panel.setBackground(panel.darkMode ? Color.BLACK : Color.WHITE);
         });
 
-        JMenuItem flipBinary = new JMenuItem("Flip Binary Clock");
+        JCheckBoxMenuItem flipBinary = new JCheckBoxMenuItem("Flip Binary Clock", panel.flipBinary);
         flipBinary.addActionListener(e -> panel.flipBinary = !panel.flipBinary);
 
-        JMenuItem flipDecimal = new JMenuItem("Flip Decimal Clock");
+        JCheckBoxMenuItem flipDecimal = new JCheckBoxMenuItem("Flip Decimal Clock", panel.flipDecimal);
         flipDecimal.addActionListener(e -> panel.flipDecimal = !panel.flipDecimal);
 
-        JMenuItem clock12hr = new JMenuItem("12/24 Hour Clock");
+        JCheckBoxMenuItem clock12hr = new JCheckBoxMenuItem("12 Hour Clock", panel.clock12hr);
         clock12hr.addActionListener(e -> panel.clock12hr = !panel.clock12hr);
 
         JMenu clockMenu = new JMenu("Clock");

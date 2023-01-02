@@ -57,7 +57,7 @@ public class Panel extends JPanel{
             else g.drawOval(getWidth() - 75, getHeight() - 40, 30, 30);
             g.drawString("PM", getWidth() - 40, getHeight() - 20);
         }
-        // recursively (i think this method is weird) update the screen
+        // recursively (i think, this method is weird) update the screen
         repaint();
     }
 

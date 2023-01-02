@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
+
 public class GUI {
     public GUI(){
         JFrame gooey = new JFrame("Binary Clock");
@@ -16,15 +17,11 @@ public class GUI {
 
         // this is all for adding the menu bar toggle for the decimal clock
         JMenuBar mb = new JMenuBar();
-        JMenu toggle = new JMenu("Show/Hide Decimal Clock");
+
+        JMenuItem toggleDecimalClock = new JMenuItem("Show/Hide Decimal Clock");
+        toggleDecimalClock.addActionListener(e -> panel.showDecimal = !panel.showDecimal);
+
         JMenu appearance = new JMenu("Light/Dark Mode");
-        toggle.addMenuListener(new MenuListener() {
-            @Override public void menuSelected(MenuEvent e) {
-                panel.showDecimal = !panel.showDecimal;
-            }
-            @Override public void menuDeselected(MenuEvent e) {}
-            @Override public void menuCanceled(MenuEvent e) {}
-        });
         appearance.addMenuListener(new MenuListener() {
             @Override public void menuSelected(MenuEvent e) {
                 panel.darkMode = !panel.darkMode;
@@ -33,7 +30,19 @@ public class GUI {
             @Override public void menuDeselected(MenuEvent e) {}
             @Override public void menuCanceled(MenuEvent e) {}
         });
-        mb.add(toggle);
+
+        JMenuItem flipBinary = new JMenuItem("Flip Binary Clock");
+        flipBinary.addActionListener(e -> panel.flipBinary = !panel.flipBinary);
+
+        JMenuItem flipDecimal = new JMenuItem("Flip Decimal Clock");
+        flipDecimal.addActionListener(e -> panel.flipDecimal = !panel.flipDecimal);
+
+        JMenu clockMenu = new JMenu("Clock");
+        clockMenu.add(toggleDecimalClock);
+        clockMenu.add(flipBinary);
+        clockMenu.add(flipDecimal);
+
+        mb.add(clockMenu);
         mb.add(appearance);
         gooey.setJMenuBar(mb);
 

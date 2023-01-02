@@ -4,6 +4,8 @@ import java.awt.*;
 public class Panel extends JPanel{
     boolean showDecimal = false;
     boolean darkMode = false;
+    boolean flipBinary = true;
+    boolean flipDecimal = false;
     private BinaryClock clock = new BinaryClock();
     public Panel(){
         setBackground(darkMode ? Color.black : Color.white);
@@ -16,18 +18,18 @@ public class Panel extends JPanel{
 
         clock.tick();
         if(showDecimal)
-            g.drawString(clock.getHour() + ":" + clock.getMinute() + ":" + clock.getSecond(), 10, 20);
+            g.drawString(clock.getHour() + ":" + clock.getMinute() + ":" + clock.getSecond(), (flipDecimal ? getWidth()-80 : 10), 20);
 
         for (int i = -1; i < 3; i++) { // draw the clock grid (as well as the labels)
             for (int j = -3; j < 3; j++) {
                 boolean[] line = (i == -1 ? clock.getHours() : (i == 0 ? clock.getMinutes() : clock.getSeconds())); // decides which line to draw
                 int y = getHeight() / 2 + (100 * i) - 50;
                 if(i!=2) {
-                    if (line[5 - (j + 3)]) g.fillOval(getWidth() / 2 + (100 * j), y, 30, 30);
+                    if (line[(flipBinary ? 5 : 2*(j+3)) - (j + 3)]) g.fillOval(getWidth() / 2 + (100 * j), y, 30, 30);
                     else g.drawOval(getWidth() / 2 + (100 * j), y, 30, 30);
                     g.drawString((i == -1 ? "Hours" : (i == 0 ? "Minutes" : "Seconds")), getWidth() / 2 + 250, y+20); // draws the titles
                 } else{
-                    g.drawString((int)Math.pow(2.0, j+3) + "", getWidth() / 2 + (100 * j) + 7, y);
+                    g.drawString((int)Math.pow(2.0, (flipBinary ? 5 : 2*(j+3)) - (j + 3)) + "", getWidth() / 2 + (100 * j) + 7, y);
                 }
             }
         }

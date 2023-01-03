@@ -114,7 +114,8 @@ public class Panel extends JPanel{
         }
         return sb.toString();
     }
-    // toggles and getters
+
+    // toggles
     public void toggleDecimal(){
         showDecimal = !showDecimal;
     }
@@ -135,6 +136,7 @@ public class Panel extends JPanel{
         binText = !binText;
     }
 
+    // getters
     public boolean isDecimalShown(){
         return showDecimal;
     }

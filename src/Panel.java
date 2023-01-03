@@ -24,7 +24,8 @@ public class Panel extends JPanel{
         g.setColor(darkMode ? Color.white : Color.black);
         g.setFont(new Font("SF Pro Display", Font.PLAIN, 20));
 
-        clock.tick(); // update the clock
+        if(SwingUtilities.isDescendingFrom(this, KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow()))
+            clock.tick(); // update the clock only if the window is in focus to save memory (i dont think this actually works)
         if(showDecimal) { // draw the decimal clock (if applicable)
             // decides how much to offset the clock
             int amount = (flipDecimal ? getWidth() - (clock12hr ? (makeClock().length() == 11 ? 135 : 125) : 105) : 10);
@@ -58,7 +59,8 @@ public class Panel extends JPanel{
             g.drawString("PM", getWidth() - 40, getHeight() - 20);
         }
         // Update the screen
-        repaint();
+        if(SwingUtilities.isDescendingFrom(this, KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow()))
+            repaint();
     }
 
     /**

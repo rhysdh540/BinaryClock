@@ -1,9 +1,8 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="BinaryClock:jar">
+  <artifact type="jar" build-on-make="true" name="BinaryClock:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/BinaryClock_jar</output-path>
     <root id="archive" name="BinaryClock.jar">
       <element id="module-output" name="BinaryClock" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.24/lombok-1.18.24.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

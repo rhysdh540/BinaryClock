@@ -27,9 +27,9 @@ public class PrefsSaver {
 
     /**
      * Updates the file with raw booleans
-     * @param clock12hr
-     * @param darkMode
-     * @param decimalShown
+     * @param clock12hr Whether or not the clocks use 12 hour time
+     * @param darkMode Whether or not the panel is in dark mode
+     * @param decimalShown ok you get it
      * @param decimalFlipped
      * @param binaryFlipped
      * @param binText
@@ -45,8 +45,7 @@ public class PrefsSaver {
         } catch (FileNotFoundException e) {
             System.err.println("File Not Found. Attempting to fix...");
             try {
-                PREFS_FILE_PATH.getParentFile().mkdirs();
-                PREFS_FILE_PATH.createNewFile();
+                makeFile();
                 out = new PrintWriter(new BufferedWriter(new FileWriter(PREFS_FILE_PATH, false)));
             } catch (FileNotFoundException e1) {
                 System.err.println("File Still Not Found:");
@@ -89,8 +88,7 @@ public class PrefsSaver {
             System.err.println("File Not Found. Attempting to fix...");
             try{
                 prefs = new boolean[]{false, true, false, false, false, false};
-                PREFS_FILE_PATH.getParentFile().mkdirs();
-                PREFS_FILE_PATH.createNewFile();
+                makeFile();
             } catch (FileNotFoundException e1) {
                 System.err.println("File Still Not Found:");
                 e1.printStackTrace();
@@ -104,6 +102,15 @@ public class PrefsSaver {
         }
         writePrefs(prefs[0], prefs[1], prefs[2], prefs[3], prefs[4], prefs[5]);
         return prefs;
+    }
+
+    /**
+     * Creates the file if it doesn't exist.
+     * @throws IOException If the file cannot be created.
+     */
+    private static void makeFile() throws IOException {
+        PREFS_FILE_PATH.getParentFile().mkdirs();
+        PREFS_FILE_PATH.createNewFile();
     }
     // getters from the file
     public static boolean getClock12hr(){

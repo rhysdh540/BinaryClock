@@ -59,8 +59,7 @@ public class Panel extends JPanel{
             g.drawString("PM", getWidth() - 40, getHeight() - 20);
         }
         // Update the screen
-        if(SwingUtilities.isDescendingFrom(this, KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow()))
-            repaint();
+        repaint();
     }
 
     /**

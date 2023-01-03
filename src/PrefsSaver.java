@@ -1,4 +1,6 @@
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Simple utility class for saving the preferences of a {@link Panel} to a file and reading them back.<br><br>
@@ -28,6 +30,14 @@ public class PrefsSaver {
         } catch (IOException e) {
             System.err.println("I/O Exception:");
             e.printStackTrace();
+            try{
+                Files.createDirectory(Paths.get(File.separator + System.getProperty("user.home") + File.separator + ".bc"));
+                PREFS_FILE_PATH.createNewFile();
+                out = new PrintWriter(new BufferedWriter(new FileWriter(PREFS_FILE_PATH, false)));
+            } catch (IOException e1) {
+                System.err.println("I/O Exception:");
+                e1.printStackTrace();
+            }
         }
         assert out != null;
         out.println(p.isClock12hr());

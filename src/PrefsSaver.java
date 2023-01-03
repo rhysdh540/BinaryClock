@@ -24,6 +24,10 @@ public class PrefsSaver {
      * @param p The panel to update preferences for
      */
     public static void writePrefs(Panel p){
+        if(System.getProperty("os.name").toLowerCase().contains("windows")) {
+            System.err.println("PrefsSaver is not supported on Windows.");
+            return;
+        }
         PrintWriter out = null;
         try{
             out = new PrintWriter(new BufferedWriter(new FileWriter(PREFS_FILE_PATH, false)));
@@ -54,6 +58,10 @@ public class PrefsSaver {
      *    <code>Clock 12 hour mode, Dark mode, Decimal Clock Shown, Decimal Clock Flipped, Binary Clock Flipped, Binary Clock uses 0's and 1's</code>
      */
     private static boolean[] readPrefs(){
+        if(System.getProperty("os.name").toLowerCase().contains("windows")) {
+            System.err.println("PrefsSaver is not supported on Windows.");
+            return new boolean[]{false, true, false, false, false, false};
+        }
         boolean[] prefs = new boolean[6];
         try{
             BufferedReader in = new BufferedReader(new FileReader(PREFS_FILE_PATH));

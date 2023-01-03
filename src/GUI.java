@@ -48,6 +48,12 @@ public class GUI {
                 PrefsSaver.writePrefs(panel);
             });
 
+            JCheckBoxMenuItem binText = new JCheckBoxMenuItem("Use 0's and 1's", panel.getBinText());
+            binText.addActionListener(e -> {
+                panel.toggleBinText();
+                PrefsSaver.writePrefs(panel);
+            });
+
             // create the menus
             JMenu clockMenu = new JMenu("Clock");
             JMenu appearanceMenu = new JMenu("Appearance");
@@ -57,6 +63,7 @@ public class GUI {
             appearanceMenu.add(lightdark);
             appearanceMenu.add(flipBinary);
             appearanceMenu.add(flipDecimal);
+            appearanceMenu.add(binText);
             clockMenu.add(clock12hr);
 
             // add the menus to the main bar

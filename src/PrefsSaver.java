@@ -45,12 +45,13 @@ public class PrefsSaver {
         out.println(p.isDecimalShown());
         out.println(p.isDecimalFlipped());
         out.println(p.isBinaryFlipped());
+        out.println(p.getBinText());
         out.close();
     }
     /**
      * Reads the preferences from the file.
      * @return An array of booleans representing the preferences. The order is as follows:<br>
-     *    <code>isClock12hr, isDarkMode, isDecimalShown, isDecimalFlipped, isBinaryFlipped</code>
+     *    <code>Clock 12 hour mode, Dark mode, Decimal Clock Shown, Decimal Clock Flipped, Binary Clock Flipped, Binary Clock uses 0's and 1's</code>
      */
     private static boolean[] readPrefs(){
         boolean[] prefs = new boolean[6];
@@ -81,5 +82,8 @@ public class PrefsSaver {
     }
     public static boolean getFlipBinary(){
         return readPrefs()[4];
+    }
+    public static boolean getBinText(){
+        return readPrefs()[5];
     }
 }

@@ -8,7 +8,11 @@ public class Panel extends JPanel{
     private boolean flipBinary = PrefsSaver.getFlipBinary();
     private boolean flipDecimal = PrefsSaver.getFlipDecimal();
     private boolean clock12hr = PrefsSaver.getClock12hr();
+    private boolean binText = PrefsSaver.getBinText();
     private boolean pm = false;
+    private final Font sfpro = new Font("SF Pro", Font.PLAIN, 20);
+    private final Font mono = new Font("JetBrains Mono NL", Font.PLAIN, 20);
+    private final Font sfprobig = new Font("SF Pro", Font.PLAIN, 40);
 
     /**
      * the clock
@@ -22,18 +26,14 @@ public class Panel extends JPanel{
         //setup
         super.paintComponent(g);
         g.setColor(darkMode ? Color.white : Color.black);
-        g.setFont(new Font("SF Pro Display", Font.PLAIN, 20));
+        g.setFont(mono);
 
         if(SwingUtilities.isDescendingFrom(this, KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow()))
             clock.tick(); // update the clock only if the window is in focus to save memory (i dont think this actually works)
         if(showDecimal) { // draw the decimal clock (if applicable)
             // decides how much to offset the clock
             int amount = (flipDecimal ? getWidth() - (clock12hr ? (makeClock().length() == 11 ? 135 : 125) : 105) : 10);
-            // draw the clock in a fixed-width font to save me from endless migraines
-            g.setFont(new Font("JetBrains Mono NL", Font.PLAIN, 20));
             g.drawString(makeClock(), amount, 20);
-            // reset the font
-            g.setFont(new Font("SF Pro Display", Font.PLAIN, 20));
         }
 
         for (int i = -1; i < 3; i++) {
@@ -45,17 +45,40 @@ public class Panel extends JPanel{
                     pm = true;
                 }
                 if(i!=2) { // draw the clock grid
-                    if (line[(flipBinary ? 5 : 2*(j+3)) - (j + 3)]) g.fillOval(getWidth() / 2 + (100 * j), y, 30, 30);
-                    else g.drawOval(getWidth() / 2 + (100 * j), y, 30, 30);
+                    g.setFont(sfprobig);
+                    if (line[(flipBinary ? 5 : 2*(j+3)) - (j + 3)]) {
+                        if(binText)
+                            g.drawString("1", getWidth() / 2 + (100 * j)+5, y+25);
+                        else
+                            g.fillOval(getWidth() / 2 + (100 * j), y, 30, 30);
+                    } else {
+                        if(binText)
+                            g.drawString("0", getWidth() / 2 + (100 * j)+5, y+25);
+                        else
+                            g.drawOval(getWidth() / 2 + (100 * j), y, 30, 30);
+                    }
+                    g.setFont(sfpro);
                     g.drawString((i == -1 ? "Hours" : (i == 0 ? "Minutes" : "Seconds")), getWidth() / 2 + 250, y+20); // draws the titles
                 } else{ // add the line labels
+                    g.setFont(sfpro);
                     g.drawString((int)Math.pow(2.0, (flipBinary ? 2*(j+3) : 5) - (j + 3)) + "", getWidth() / 2 + (100 * j) + 7, y);
                 }
             }
         }
         if(clock12hr) { // add the AM/PM indicator
-            if(pm) g.fillOval(getWidth() - 75, getHeight() - 40, 30, 30);
-            else g.drawOval(getWidth() - 75, getHeight() - 40, 30, 30);
+            g.setFont(sfprobig);
+            if(pm) {
+                if(binText)
+                    g.drawString("1", getWidth() - 75, getHeight() - 15);
+                else
+                    g.fillOval(getWidth() - 75, getHeight() - 43, 30, 30);
+            } else {
+                if(binText)
+                    g.drawString("0", getWidth() - 75, getHeight() - 15);
+                else
+                    g.drawOval(getWidth() - 75, getHeight() - 43, 30, 30);
+            }
+            g.setFont(sfpro);
             g.drawString("PM", getWidth() - 40, getHeight() - 20);
         }
         // Update the screen
@@ -108,6 +131,9 @@ public class Panel extends JPanel{
     public void toggleClock12hr(){
         clock12hr = !clock12hr;
     }
+    public void toggleBinText(){
+        binText = !binText;
+    }
 
     public boolean isDecimalShown(){
         return showDecimal;
@@ -123,5 +149,8 @@ public class Panel extends JPanel{
     }
     public boolean isClock12hr(){
         return clock12hr;
+    }
+    public boolean getBinText(){
+        return binText;
     }
 }

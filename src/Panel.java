@@ -3,22 +3,28 @@ import java.awt.*;
 
 public class Panel extends JPanel{
     // preferences for how the clock is displayed
-    private boolean showDecimal = PrefsSaver.getShowDecimal();
-    private boolean darkMode = PrefsSaver.getDarkMode();
-    private boolean flipBinary = PrefsSaver.getFlipBinary();
-    private boolean flipDecimal = PrefsSaver.getFlipDecimal();
-    private boolean clock12hr = PrefsSaver.getClock12hr();
-    private boolean binText = PrefsSaver.getBinText();
+    private boolean showDecimal;
+    private boolean darkMode;
+    private boolean flipBinary;
+    private boolean flipDecimal;
+    private boolean clock12hr;
+    private boolean binText;
     private boolean pm = false;
-    private final Font sfpro = new Font("SF Pro", Font.PLAIN, 20);
-    private final Font mono = new Font("JetBrains Mono NL", Font.PLAIN, 20);
-    private final Font sfprobig = new Font("SF Pro", Font.PLAIN, 40);
+    private static final Font sfpro = new Font("SF Pro", Font.PLAIN, 20);
+    private static final Font mono = new Font("JetBrains Mono NL", Font.PLAIN, 20);
+    private static final Font sfprobig = new Font("SF Pro", Font.PLAIN, 40);
 
     /**
      * the clock
      */
     private BinaryClock clock = new BinaryClock();
     public Panel(){
+        showDecimal = PrefsSaver.getShowDecimal();
+        darkMode = PrefsSaver.getDarkMode();
+        flipBinary = PrefsSaver.getFlipBinary();
+        flipDecimal = PrefsSaver.getFlipDecimal();
+        clock12hr = PrefsSaver.getClock12hr();
+        binText = PrefsSaver.getBinText();
         setBackground(darkMode ? Color.black : Color.white);
     }
 

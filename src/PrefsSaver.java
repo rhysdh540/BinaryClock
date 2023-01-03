@@ -22,20 +22,35 @@ public class PrefsSaver {
      * @param p The panel to update preferences for
      */
     public static void writePrefs(Panel p){
-        if(System.getProperty("os.name").toLowerCase().contains("windows")) {
-            System.err.println("PrefsSaver is not supported on Windows.");
-            return;
-        }
+        writePrefs(p.isClock12hr(), p.isDarkMode(), p.isDecimalShown(), p.isDecimalFlipped(), p.isBinaryFlipped(), p.getBinText());
+    }
+
+    /**
+     * Updates the file with raw booleans
+     * @param clock12hr
+     * @param darkMode
+     * @param decimalShown
+     * @param decimalFlipped
+     * @param binaryFlipped
+     * @param binText
+     */
+    private static void writePrefs(boolean clock12hr, boolean darkMode, boolean decimalShown, boolean decimalFlipped, boolean binaryFlipped, boolean binText) {
+//        if(System.getProperty("os.name").toLowerCase().contains("windows")) {
+//            System.err.println("PrefsSaver is not supported on Windows.");
+//            return;
+//        }
         PrintWriter out = null;
-        try{
+        try {
             out = new PrintWriter(new BufferedWriter(new FileWriter(PREFS_FILE_PATH, false)));
         } catch (FileNotFoundException e) {
-            System.err.println("File Not Found:");
-            e.printStackTrace();
-            try{
+            System.err.println("File Not Found. Attempting to fix...");
+            try {
                 PREFS_FILE_PATH.getParentFile().mkdirs();
                 PREFS_FILE_PATH.createNewFile();
                 out = new PrintWriter(new BufferedWriter(new FileWriter(PREFS_FILE_PATH, false)));
+            } catch (FileNotFoundException e1) {
+                System.err.println("File Still Not Found:");
+                e1.printStackTrace();
             } catch (IOException e1) {
                 System.err.println("I/O Exception:");
                 e1.printStackTrace();
@@ -45,12 +60,12 @@ public class PrefsSaver {
             e.printStackTrace();
         }
         assert out != null;
-        out.println(p.isClock12hr());
-        out.println(p.isDarkMode());
-        out.println(p.isDecimalShown());
-        out.println(p.isDecimalFlipped());
-        out.println(p.isBinaryFlipped());
-        out.println(p.getBinText());
+        out.println(clock12hr);
+        out.println(darkMode);
+        out.println(decimalShown);
+        out.println(decimalFlipped);
+        out.println(binaryFlipped);
+        out.println(binText);
         out.close();
     }
     /**
@@ -59,10 +74,10 @@ public class PrefsSaver {
      *    <code>Clock 12 hour mode, Dark mode, Decimal Clock Shown, Decimal Clock Flipped, Binary Clock Flipped, Binary Clock uses 0's and 1's</code>
      */
     private static boolean[] readPrefs(){
-        if(System.getProperty("os.name").toLowerCase().contains("windows")) {
-            System.err.println("PrefsSaver is not supported on Windows.");
-            return new boolean[]{false, true, false, false, false, false};
-        }
+//        if(System.getProperty("os.name").toLowerCase().contains("windows")) {
+//            System.err.println("PrefsSaver is not supported on Windows.");
+//            return new boolean[]{false, true, false, false, false, false};
+//        }
         boolean[] prefs = new boolean[6];
         try{
             BufferedReader in = new BufferedReader(new FileReader(PREFS_FILE_PATH));
@@ -70,10 +85,24 @@ public class PrefsSaver {
                 prefs[i] = Boolean.parseBoolean(in.readLine());
             }
             in.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("File Not Found. Attempting to fix...");
+            try{
+                prefs = new boolean[]{false, true, false, false, false, false};
+                PREFS_FILE_PATH.getParentFile().mkdirs();
+                PREFS_FILE_PATH.createNewFile();
+            } catch (FileNotFoundException e1) {
+                System.err.println("File Still Not Found:");
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                System.err.println("I/O Exception:");
+                e1.printStackTrace();
+            }
         } catch (IOException e) {
             System.err.println("I/O Exception:");
             e.printStackTrace();
         }
+        writePrefs(prefs[0], prefs[1], prefs[2], prefs[3], prefs[4], prefs[5]);
         return prefs;
     }
     // getters from the file

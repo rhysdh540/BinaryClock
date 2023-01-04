@@ -14,6 +14,7 @@ public class Panel extends JPanel{
     /**
      * the clock
      */
+    @SuppressWarnings("FieldMayBeFinal") // shut up
     private BinaryClock clock = new BinaryClock();
     public Panel(){
         prefs = PrefsSaver.readPrefs();
@@ -30,10 +31,11 @@ public class Panel extends JPanel{
             clock.tick(); // update the clock only if the window is in focus to save memory (i dont think this actually works)
         if(prefs.get("Show Decimal Clock")) { // draw the decimal clock (if applicable)
             // decides how much to offset the clock
-            int amount = (prefs.get("Flip Binary Clock") ? getWidth() - (prefs.get("12 Hour Clock") ? (makeClock().length() == 11 ? 135 : 125) : 105) : 10);
+            int amount = (prefs.get("Flip Decimal Clock") ? getWidth() - (prefs.get("12 Hour Clock") ? (makeClock().length() == 11 ? 135 : 125) : 105) : 10);
             g.drawString(makeClock(), amount, 20);
         }
 
+        // there's a lot of weird math in this part, but its just to make sure the clock is centered (and other parts are right/left-aligned)
         for (int i = -1; i < 3; i++) {
             for (int j = -3; j < 3; j++) {
                 boolean[] line = (i == -1 ? clock.getHours() : (i == 0 ? clock.getMinutes() : clock.getSeconds())); // decides which line to draw

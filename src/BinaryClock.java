@@ -26,18 +26,10 @@ public class BinaryClock {
         hours = toBinaryArray(Integer.toBinaryString(hour));
     }
     /**
-     * Gets the current time in New York.
-     * @return the current time in New York.
-     */
-    private static LocalTime getTime(){
-        return LocalTime.now(java.time.ZoneId.of("America/New_York"));
-    }
-
-    /**
-     * Updates the clock to the current time based on the {@link BinaryClock#getTime()} method.
+     * Updates the clock to the current time based on the current time in New York.
      */
     public void tick(){
-        LocalTime time = getTime();
+        LocalTime time = LocalTime.now(java.time.ZoneId.of("America/New_York"));
         second = time.getSecond();
         minute = time.getMinute();
         hour = time.getHour();
@@ -65,7 +57,7 @@ public class BinaryClock {
 
         return arr;
     }
-    // getters
+    // getters (no setters because update method already does that)
     public int getHour(){
         return hour;
     }

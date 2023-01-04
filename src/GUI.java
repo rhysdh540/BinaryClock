@@ -14,11 +14,11 @@ public class GUI {
         } catch (SecurityException e) {
             System.err.println("There was a security exception for: 'taskbar.setIconImage'");
         }
-
-        // this is all for adding the menu bar toggles
+        // create the menu bar toggles
         {
-            //create the menus
+            
             JMenuBar mb = new JMenuBar(); // create the menu bar
+            // create the menus
             JMenu clockMenu = new JMenu("Clock");
             JMenu appearanceMenu = new JMenu("Appearance");
 

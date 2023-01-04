@@ -26,7 +26,7 @@ public class GUI {
             createJCheckBoxMenuItem("Show Decimal Clock", appearanceMenu);
             createJCheckBoxMenuItem("Dark Mode", appearanceMenu);
             createJCheckBoxMenuItem("Flip Binary Clock", appearanceMenu);
-            createJCheckBoxMenuItem("Flip Decimal Clock", appearanceMenu);
+            createJCheckBoxMenuItem("Move Decimal Clock to Right Corner", appearanceMenu);
             createJCheckBoxMenuItem("12 Hour Clock", clockMenu);
             createJCheckBoxMenuItem("Use 0's and 1's", appearanceMenu);
             // add the menus to the main bar

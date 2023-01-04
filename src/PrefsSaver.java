@@ -106,7 +106,7 @@ public class PrefsSaver {
         prefs.put("Show Decimal Clock",false);
         prefs.put("Dark Mode",true);
         prefs.put("Flip Binary Clock",false);
-        prefs.put("Flip Decimal Clock",false);
+        prefs.put("Move Decimal Clock to Right Corner",false);
         prefs.put("12 Hour Clock",false);
         prefs.put("Use 0's and 1's",false);
         return prefs;

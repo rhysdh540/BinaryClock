@@ -13,6 +13,7 @@ public class Panel extends JPanel{
     /**
      * the clock
      */
+    @SuppressWarnings("FieldMayBeFinal") // shut up
     private BinaryClock clock = new BinaryClock();
     public Panel(){
         prefs = PrefsSaver.readPrefs();

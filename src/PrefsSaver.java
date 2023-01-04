@@ -9,7 +9,7 @@ public class PrefsSaver {
     /**
      * The file to which the preferences are written and saved.
      */
-    private static final File PREFS_FILE_PATH = new File(System.getProperty("user.home") + File.separator + ".bc" + File.separator + "prefs.txt");
+    private static final File PREFS_FILE_PATH = new File(System.getProperty("user.home") + File.separator + ".rdhbinaryclock" + File.separator + "prefs.txt");
 
     /**
      * Don't let anyone instantiate this class.
@@ -17,7 +17,6 @@ public class PrefsSaver {
     private PrefsSaver(){
         throw new RuntimeException("It is illegal to instantiate this class.");
     }
-
 
     /**
      * Updates the file with a HashMap
@@ -94,6 +93,7 @@ public class PrefsSaver {
     /**
      * Creates the file if it doesn't exist.
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private static void makeFile() {
         PREFS_FILE_PATH.getParentFile().mkdirs();
         try {

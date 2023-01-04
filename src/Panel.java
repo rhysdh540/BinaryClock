@@ -17,6 +17,7 @@ public class Panel extends JPanel{
     /**
      * the clock
      */
+    @SuppressWarnings("FieldMayBeFinal") // shut up
     private BinaryClock clock = new BinaryClock();
     public Panel(){
         showDecimal = PrefsSaver.getShowDecimal();
@@ -158,7 +159,7 @@ public class Panel extends JPanel{
     public boolean isClock12hr(){
         return clock12hr;
     }
-    public boolean getBinText(){
+    public boolean isTextBin(){
         return binText;
     }
 }

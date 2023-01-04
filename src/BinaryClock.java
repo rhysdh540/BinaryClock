@@ -62,17 +62,17 @@ public class BinaryClock {
 
     /**
      * Converts a {@code char[]} of 0's and 1's to a {@code boolean[]}.
-     * @param n the {@code char[]} to convert
+     * @param arr the {@code char[]} to convert
      * @return a {@code boolean[]} representation of the {@code char[]}
      */
-    public static boolean[] toBinaryArray(char[] n){
-        boolean[] b = new boolean[n.length];
-        for(int i = 0; i < n.length; i++)
-            b[i] = n[i] == '1';
+    public static boolean[] toBinaryArray(char[] arr){
+        boolean[] b = new boolean[arr.length];
+        for(int i = 0; i < arr.length; i++)
+            b[i] = arr[i] == '1';
 
         return b;
     }
-    // getters
+    // getters (no setters because update method already does that)
     public int getHour(){
         return hour;
     }

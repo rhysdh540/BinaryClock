@@ -48,7 +48,7 @@ public class GUI {
                 PrefsSaver.writePrefs(panel);
             });
 
-            JCheckBoxMenuItem binText = new JCheckBoxMenuItem("Use 0's and 1's", panel.getBinText());
+            JCheckBoxMenuItem binText = new JCheckBoxMenuItem("Use 0's and 1's", panel.isTextBin());
             binText.addActionListener(e -> {
                 panel.toggleBinText();
                 PrefsSaver.writePrefs(panel);

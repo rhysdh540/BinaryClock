@@ -22,7 +22,7 @@ public class PrefsSaver {
      * @param p The panel to update preferences for
      */
     public static void writePrefs(Panel p){
-        writePrefs(p.isClock12hr(), p.isDarkMode(), p.isDecimalShown(), p.isDecimalFlipped(), p.isBinaryFlipped(), p.getBinText());
+        writePrefs(p.isClock12hr(), p.isDarkMode(), p.isDecimalShown(), p.isDecimalFlipped(), p.isBinaryFlipped(), p.isTextBin());
     }
     /**
      * Updates the file with raw booleans
@@ -85,7 +85,7 @@ public class PrefsSaver {
             in.close();
         } catch (FileNotFoundException e) {
             System.err.println("File Not Found. Attempting to fix...");
-            try{
+            try{ // set default values (everything off except dark mode)
                 prefs = new boolean[]{false, true, false, false, false, false};
                 makeFile();
             } catch (FileNotFoundException e1) {
@@ -98,7 +98,7 @@ public class PrefsSaver {
         } catch (IOException e) {
             System.err.println("I/O Exception:");
             e.printStackTrace();
-        }
+        } // save the prefs to the file immediately so if the user doesn't change anything it doesn't break
         writePrefs(prefs[0], prefs[1], prefs[2], prefs[3], prefs[4], prefs[5]);
         return prefs;
     }

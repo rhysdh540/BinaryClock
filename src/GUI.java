@@ -37,7 +37,7 @@ public class GUI {
 
         // stuff that must be done (or else)
         gooey.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Dimension size = new Dimension(854, 480); // dont ask why this is so specific // why is it so specific
+        Dimension size = new Dimension(854, 480); // don't ask why this is so specific
         gooey.setSize(size);
         gooey.setMinimumSize(size);
         gooey.getContentPane().add(panel);
@@ -46,7 +46,7 @@ public class GUI {
 
     public void createJCheckBoxMenuItem(String name, JMenu menu) {
         if(panel.prefs.get(name) == null){
-            System.err.println("Unrecognized Preference Name in File. Skipping menu box");
+            System.err.println("Unrecognized Preference Name in File. Skipping menu box\nThis means your file might be corrupted!");
             return;
         }
         JCheckBoxMenuItem checkbox = new JCheckBoxMenuItem(name, panel.prefs.get(name));

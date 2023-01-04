@@ -14,11 +14,11 @@ public class GUI {
         } catch (SecurityException e) {
             System.err.println("There was a security exception for: 'taskbar.setIconImage'");
         }
-
-        // this is all for adding the menu bar toggles
+        // create the menu bar toggles
         {
-            //create the menus
+            
             JMenuBar mb = new JMenuBar(); // create the menu bar
+            // create the menus
             JMenu clockMenu = new JMenu("Clock");
             JMenu appearanceMenu = new JMenu("Appearance");
 
@@ -26,7 +26,7 @@ public class GUI {
             createJCheckBoxMenuItem("Show Decimal Clock", appearanceMenu);
             createJCheckBoxMenuItem("Dark Mode", appearanceMenu);
             createJCheckBoxMenuItem("Flip Binary Clock", appearanceMenu);
-            createJCheckBoxMenuItem("Flip Decimal Clock", appearanceMenu);
+            createJCheckBoxMenuItem("Move Decimal Clock to Right Corner", appearanceMenu);
             createJCheckBoxMenuItem("12 Hour Clock", clockMenu);
             createJCheckBoxMenuItem("Use 0's and 1's", appearanceMenu);
             // add the menus to the main bar

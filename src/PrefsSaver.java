@@ -8,7 +8,7 @@ public class PrefsSaver {
     /**
      * The file to which the preferences are written and saved.
      */
-    private static final File PREFS_FILE_PATH = new File(System.getProperty("user.home") + File.separator + ".bc" + File.separator + "prefs.txt");
+    private static final File PREFS_FILE_PATH = new File(System.getProperty("user.home") + File.separator + ".rdhbinaryclock" + File.separator + "prefs.txt");
 
     /**
      * Don't let anyone instantiate this class.

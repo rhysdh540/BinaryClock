@@ -20,27 +20,11 @@ public class BinaryClock {
      * Updates the {@code boolean[]} variables to use the values provided by the {@code int} variables.
      */
     private void update(){
-        seconds = toBinaryArray(toBinary(second).toCharArray());
-        minutes = toBinaryArray(toBinary(minute).toCharArray());
-        hours = toBinaryArray(toBinary(hour).toCharArray());
-    }
 
-    /**
-     * Converts a number into a String of 1's and 0's of length 6.
-     * @param n the number to convert
-     * @return a String representation of the number in binary
-     */
-    public static String toBinary(int n){
-        StringBuilder s = new StringBuilder();
-        while(n > 0){
-            s.insert(0, n % 2);
-            n /= 2;
-        }
-        while(s.length()<6)
-            s.insert(0, "0");
-        return s.toString();
+        seconds = toBinaryArray(Integer.toBinaryString(second));
+        minutes = toBinaryArray(Integer.toBinaryString(minute));
+        hours = toBinaryArray(Integer.toBinaryString(hour));
     }
-
     /**
      * Gets the current time in New York.
      * @return the current time in New York.
@@ -62,15 +46,24 @@ public class BinaryClock {
 
     /**
      * Converts a {@code char[]} of 0's and 1's to a {@code boolean[]}.
-     * @param n the {@code char[]} to convert
+     * @param string the {@code String} to convert
      * @return a {@code boolean[]} representation of the {@code char[]}
      */
-    public static boolean[] toBinaryArray(char[] n){
-        boolean[] b = new boolean[n.length];
-        for(int i = 0; i < n.length; i++)
-            b[i] = n[i] == '1';
+    public static boolean[] toBinaryArray(String string){
+        while(string.length() < 6) {
+            string = "0"+string;
+        }
+        boolean[] arr = new boolean[6];
+        for(int i = 0; i < 6; i++) {
+            if (Character.getNumericValue(string.charAt(i)) == 1){
+                arr[i] = true;
+            }
+            else {
+                arr[i] = false;
+            }
+        }
 
-        return b;
+        return arr;
     }
     // getters
     public int getHour(){

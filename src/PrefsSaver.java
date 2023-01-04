@@ -68,7 +68,6 @@ public class PrefsSaver {
             String key,value;
                 while(scanner.hasNextLine()) {
                     key = scanner.nextLine();
-                    System.out.println(key);
                     value = scanner.nextLine();
                     preferences.put(key, Boolean.parseBoolean(value));
                 }

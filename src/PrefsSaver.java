@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.*;
 
 /**
  * Simple utility class for saving the preferences of a {@link Panel} to a file and reading them back.<br><br>
@@ -18,30 +19,17 @@ public class PrefsSaver {
     }
 
     /**
-     * Updates the file with the preferences for a panel.
-     * @param p The panel to update preferences for
+     * Updates the file with a HashMap
      */
-    public static void writePrefs(Panel p){
-        writePrefs(p.isClock12hr(), p.isDarkMode(), p.isDecimalShown(), p.isDecimalFlipped(), p.isBinaryFlipped(), p.isTextBin());
-    }
-    /**
-     * Updates the file with raw booleans
-     * @param clock12hr Whether or not the clocks use 12 hour time
-     * @param darkMode Whether or not the panel is in dark mode
-     * @param decimalShown Whether or not the decimal clock is shown
-     * @param decimalFlipped Whether or not the decimal clock is moved to the right side of the panel
-     * @param binaryFlipped Whether or not the binary clock is flipped
-     * @param binText Whether or not the binary clock uses 0's and 1's
-     */
-    private static void writePrefs(boolean clock12hr, boolean darkMode, boolean decimalShown, boolean decimalFlipped, boolean binaryFlipped, boolean binText) {
-        PrintWriter out = null;
+    public static void writePrefs(HashMap<String,Boolean> preferences){
+        FileWriter out = null;
         try {
-            out = new PrintWriter(new BufferedWriter(new FileWriter(PREFS_FILE_PATH, false)));
+            out = new FileWriter(PREFS_FILE_PATH, false);
         } catch (FileNotFoundException e) {
             System.err.println("File Not Found. Attempting to fix...");
             try {
                 makeFile();
-                out = new PrintWriter(new BufferedWriter(new FileWriter(PREFS_FILE_PATH, false)));
+                out = new FileWriter(PREFS_FILE_PATH, false);
             } catch (FileNotFoundException e1) {
                 System.err.println("File Still Not Found:");
                 e1.printStackTrace();
@@ -54,73 +42,79 @@ public class PrefsSaver {
             e.printStackTrace();
         }
         assert out != null;
-        out.println(clock12hr);
-        out.println(darkMode);
-        out.println(decimalShown);
-        out.println(decimalFlipped);
-        out.println(binaryFlipped);
-        out.println(binText);
-        out.close();
+        try {
+            for (Map.Entry<String,Boolean> mapElement : preferences.entrySet()) {
+                String key = mapElement.getKey();
+                boolean value = mapElement.getValue();
+                out.write(key+"\n"+value+"\n");
+            }
+            out.close();
+        } catch(IOException e) {
+            System.err.println("Saving Preferences Failed! :(");
+            e.printStackTrace();
+        }
     }
     /**
      * Reads the preferences from the file.
-     * @return An array of booleans representing the preferences. The order is as follows:<br>
+     * @return A hashmap representing the preferences. The order is as follows:<br>
      *    <code>Clock 12 hour mode, Dark mode, Decimal Clock Shown, Decimal Clock Flipped, Binary Clock Flipped, Binary Clock uses 0's and 1's</code>
      */
-    private static boolean[] readPrefs(){
-        boolean[] prefs = new boolean[6];
+    public static HashMap<String,Boolean> readPrefs(){
+        HashMap<String,Boolean> preferences = new HashMap<>();
         try{
-            BufferedReader in = new BufferedReader(new FileReader(PREFS_FILE_PATH));
-            for(int i = 0; i < 6; i++){
-                prefs[i] = Boolean.parseBoolean(in.readLine());
-            }
+            FileReader in = new FileReader(PREFS_FILE_PATH);
+            Scanner scanner = new Scanner(in);
+            String key,value;
+                while(scanner.hasNextLine()) {
+                    key = scanner.nextLine();
+                    System.out.println(key);
+                    value = scanner.nextLine();
+                    preferences.put(key, Boolean.parseBoolean(value));
+                }
             in.close();
+            scanner.close();
         } catch (FileNotFoundException e) {
-            System.err.println("File Not Found. Attempting to fix...");
-            try{ // set default values (everything off except dark mode)
-                prefs = new boolean[]{false, true, false, false, false, false};
-                makeFile();
-            } catch (FileNotFoundException e1) {
-                System.err.println("File Still Not Found:");
-                e1.printStackTrace();
-            } catch (IOException e1) {
-                System.err.println("I/O Exception:");
-                e1.printStackTrace();
-            }
+            System.out.println("File Not Found. Implementing a Save File");
+            makeFile();
         } catch (IOException e) {
             System.err.println("I/O Exception:");
             e.printStackTrace();
-        } // save the prefs to the file immediately so if the user doesn't change anything it doesn't break
-        writePrefs(prefs[0], prefs[1], prefs[2], prefs[3], prefs[4], prefs[5]);
-        return prefs;
+        } catch(NoSuchElementException e) {
+        System.err.println("File Corrupted! Using Default Preferences ");
+        preferences = defaultSettings();
+    }
+        if(preferences.size() == 0) {
+            preferences = defaultSettings();
+        }
+        writePrefs(preferences);
+        return preferences;
     }
 
     /**
      * Creates the file if it doesn't exist.
-     * @throws IOException If the file cannot be created.
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private static void makeFile() throws IOException {
+    private static void makeFile() {
         PREFS_FILE_PATH.getParentFile().mkdirs();
-        PREFS_FILE_PATH.createNewFile();
+        try {
+            PREFS_FILE_PATH.createNewFile();
+        } catch (IOException e) {
+            System.err.println("File Failed to be Created");
+        }
     }
-    // getters from the file
-    public static boolean getClock12hr(){
-        return readPrefs()[0];
-    }
-    public static boolean getDarkMode(){
-        return readPrefs()[1];
-    }
-    public static boolean getShowDecimal(){
-        return readPrefs()[2];
-    }
-    public static boolean getFlipDecimal(){
-        return readPrefs()[3];
-    }
-    public static boolean getFlipBinary(){
-        return readPrefs()[4];
-    }
-    public static boolean getBinText(){
-        return readPrefs()[5];
+
+    /**
+     * Returns a hash map with the default settings
+     * @return a hash map with the default settings
+     */
+    public static HashMap<String,Boolean> defaultSettings(){
+        HashMap<String,Boolean> prefs = new HashMap<>();
+        prefs.put("Show Decimal Clock",false);
+        prefs.put("Dark Mode",true);
+        prefs.put("Flip Binary Clock",false);
+        prefs.put("Flip Decimal Clock",false);
+        prefs.put("12 Hour Clock",false);
+        prefs.put("Use 0's and 1's",false);
+        return prefs;
     }
 }

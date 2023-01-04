@@ -34,6 +34,7 @@ public class Panel extends JPanel{
             g.drawString(makeClock(), amount, 20);
         }
 
+        // there's a lot of weird math in this part, but its just to make sure the clock is centered (and other parts are right/left-aligned)
         for (int i = -1; i < 3; i++) {
             for (int j = -3; j < 3; j++) {
                 boolean[] line = (i == -1 ? clock.getHours() : (i == 0 ? clock.getMinutes() : clock.getSeconds())); // decides which line to draw

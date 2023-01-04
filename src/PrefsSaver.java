@@ -62,23 +62,17 @@ public class PrefsSaver {
     public static HashMap<String,Boolean> readPrefs(){
         HashMap<String,Boolean> preferences = new HashMap<>();
         try{
-            FileReader in = new FileReader(PREFS_FILE_PATH);
-            Scanner scanner = new Scanner(in);
+            Scanner scanner = new Scanner(new FileReader(PREFS_FILE_PATH));
             String key,value;
                 while(scanner.hasNextLine()) {
                     key = scanner.nextLine();
-                    System.out.println(key);
                     value = scanner.nextLine();
                     preferences.put(key, Boolean.parseBoolean(value));
                 }
-            in.close();
             scanner.close();
         } catch (FileNotFoundException e) {
             System.out.println("File Not Found. Implementing a Save File");
             makeFile();
-        } catch (IOException e) {
-            System.err.println("I/O Exception:");
-            e.printStackTrace();
         } catch(NoSuchElementException e) {
         System.err.println("File Corrupted! Using Default Preferences ");
         preferences = defaultSettings();

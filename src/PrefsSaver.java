@@ -76,15 +76,7 @@ public class PrefsSaver {
             scanner.close();
         } catch (FileNotFoundException e) {
             System.out.println("File Not Found. Implementing a Save File");
-            try{
-                makeFile();
-            } catch (FileNotFoundException e1) {
-                System.err.println("File Still Not Found:");
-                e1.printStackTrace();
-            } catch (IOException e1) {
-                System.err.println("I/O Exception:");
-                e1.printStackTrace();
-            }
+            makeFile();
         } catch (IOException e) {
             System.err.println("I/O Exception:");
             e.printStackTrace();
@@ -101,11 +93,14 @@ public class PrefsSaver {
 
     /**
      * Creates the file if it doesn't exist.
-     * @throws IOException If the file cannot be created.
      */
-    private static void makeFile() throws IOException {
+    private static void makeFile() {
         PREFS_FILE_PATH.getParentFile().mkdirs();
-        PREFS_FILE_PATH.createNewFile();
+        try {
+            PREFS_FILE_PATH.createNewFile();
+        } catch (IOException e) {
+            System.err.println("File Failed to be Created");
+        }
     }
 
     /**

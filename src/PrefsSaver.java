@@ -56,7 +56,7 @@ public class PrefsSaver {
     }
     /**
      * Reads the preferences from the file.
-     * @return A hashmap representing the preferences. The order is as follows:<br>
+     * @return A HashMap representing the preferences. The order is as follows:<br>
      *    <code>Clock 12 hour mode, Dark mode, Decimal Clock Shown, Decimal Clock Flipped, Binary Clock Flipped, Binary Clock uses 0's and 1's</code>
      */
     public static HashMap<String,Boolean> readPrefs(){

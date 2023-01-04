@@ -30,7 +30,7 @@ public class Panel extends JPanel{
             clock.tick(); // update the clock only if the window is in focus to save memory (i dont think this actually works)
         if(prefs.get("Show Decimal Clock")) { // draw the decimal clock (if applicable)
             // decides how much to offset the clock
-            int amount = (prefs.get("Flip Binary Clock") ? getWidth() - (prefs.get("12 Hour Clock") ? (makeClock().length() == 11 ? 135 : 125) : 105) : 10);
+            int amount = (prefs.get("Flip Decimal Clock") ? getWidth() - (prefs.get("12 Hour Clock") ? (makeClock().length() == 11 ? 135 : 125) : 105) : 10);
             g.drawString(makeClock(), amount, 20);
         }
 

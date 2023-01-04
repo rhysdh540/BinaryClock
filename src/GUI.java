@@ -12,11 +12,10 @@ public class GUI {
         } catch (UnsupportedOperationException e) { // if not on macos, try the windows method
             gooey.setIconImage(icon);
         } catch (SecurityException e) {
-            System.err.println("There was a security exception for: 'taskbar.setIconImage'");
+            System.err.println("There was a security exception for: 'Taskbar.setIconImage'");
         }
         // create the menu bar toggles
         {
-            
             JMenuBar mb = new JMenuBar(); // create the menu bar
             // create the menus
             JMenu clockMenu = new JMenu("Clock");
@@ -37,7 +36,7 @@ public class GUI {
 
         // stuff that must be done (or else)
         gooey.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Dimension size = new Dimension(854, 480); // don't ask why this is so specific
+        Dimension size = new Dimension(854, 480);
         gooey.setSize(size);
         gooey.setMinimumSize(size);
         gooey.getContentPane().add(panel);

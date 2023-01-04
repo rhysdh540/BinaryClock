@@ -1,5 +1,13 @@
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.FileReader;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.NoSuchElementException;
 
 /**
  * Simple utility class for saving the preferences of a {@link Panel} to a file and reading them back.<br><br>

@@ -1,10 +1,10 @@
-import javax.swing.*;
+import javax.swing.UIManager;
 
 public class Main {
     public static void main(String[] args) {
         try {
             if(System.getProperty("os.name").toLowerCase().contains("mac")) {
-                // do macOS stuff to make the thing look better
+                // do macos stuff to make the thing look better
                 // note that this must be done BEFORE any swing code
                 System.setProperty("apple.laf.useScreenMenuBar", "true");
                 System.setProperty("apple.awt.application.name", "BinaryClock");

@@ -28,7 +28,7 @@ public class Panel extends JPanel{
         g.setFont(MONO);
 
         if(SwingUtilities.isDescendingFrom(this, KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow()))
-            clock.tick(); // update the clock only if the window is in focus to save memory (i dont think this actually works)
+            clock.tick(); // update the clock only if the window is in focus to save memory (this barely does anything since the screen still constantly updates anyway)
         if(prefs.get("Show Decimal Clock")) { // draw the decimal clock (if applicable)
             // decides how much to offset the clock
             int amount = (prefs.get("Move Decimal Clock to Right Corner") ? getWidth() - (prefs.get("12 Hour Clock") ? (makeClock().length() == 11 ? 135 : 125) : 105) : 10);
@@ -40,7 +40,7 @@ public class Panel extends JPanel{
             for (int j = -3; j < 3; j++) {
                 boolean[] line = (i == -1 ? clock.getHours() : (i == 0 ? clock.getMinutes() : clock.getSeconds())); // decides which line to draw
                 int y = getHeight() / 2 + (100 * i) - 50;
-                if(i == -1 && prefs.get("12 Hour Clock") && clock.getHour() > 12){ // am/pm fix
+                if(i == -1 && prefs.get("12 Hour Clock") && clock.getHour() >= 12){ // am/pm fix
                     line = BinaryClock.toBinaryArray(Integer.toBinaryString(clock.getHour()-12));
                     pm = true;
                 }
@@ -96,7 +96,8 @@ public class Panel extends JPanel{
         int s = clock.getSecond();
 
         if(prefs.get("12 Hour Clock")){
-            if(pm) h -= 12;
+            if(pm && h!=12) h -= 12;
+            if(h == 0) h = 12;
             sb.append(h).append(":");
             if(m<10) sb.append("0");
             sb.append(m).append(":");

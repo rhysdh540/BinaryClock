@@ -24,15 +24,14 @@ public class PrefsSaver {
     public static void writePrefs(Panel p){
         writePrefs(p.isClock12hr(), p.isDarkMode(), p.isDecimalShown(), p.isDecimalFlipped(), p.isBinaryFlipped(), p.getBinText());
     }
-
     /**
      * Updates the file with raw booleans
      * @param clock12hr Whether or not the clocks use 12 hour time
      * @param darkMode Whether or not the panel is in dark mode
-     * @param decimalShown ok you get it
-     * @param decimalFlipped
-     * @param binaryFlipped
-     * @param binText
+     * @param decimalShown Whether or not the decimal clock is shown
+     * @param decimalFlipped Whether or not the decimal clock is moved to the right side of the panel
+     * @param binaryFlipped Whether or not the binary clock is flipped
+     * @param binText Whether or not the binary clock uses 0's and 1's
      */
     private static void writePrefs(boolean clock12hr, boolean darkMode, boolean decimalShown, boolean decimalFlipped, boolean binaryFlipped, boolean binText) {
 //        if(System.getProperty("os.name").toLowerCase().contains("windows")) {
@@ -108,6 +107,7 @@ public class PrefsSaver {
      * Creates the file if it doesn't exist.
      * @throws IOException If the file cannot be created.
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private static void makeFile() throws IOException {
         PREFS_FILE_PATH.getParentFile().mkdirs();
         PREFS_FILE_PATH.createNewFile();

@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class Panel extends JPanel{
     // preferences for how the clock is displayed
-    private boolean showDecimal; // this is a change
+    private boolean showDecimal;
     private boolean darkMode;
     private boolean flipBinary;
     private boolean flipDecimal;

@@ -20,40 +20,15 @@ public class BinaryClock {
      * Updates the {@code boolean[]} variables to use the values provided by the {@code int} variables.
      */
     private void update(){
-        seconds = toBinaryArray(toBinary(second).toCharArray());
-        minutes = toBinaryArray(toBinary(minute).toCharArray());
-        hours = toBinaryArray(toBinary(hour).toCharArray());
+        seconds = toBinaryArray(Integer.toBinaryString(second));
+        minutes = toBinaryArray(Integer.toBinaryString(minute));
+        hours = toBinaryArray(Integer.toBinaryString(hour));
     }
-
     /**
-     * Converts a number into a String of 1's and 0's of length 6.
-     * @param n the number to convert
-     * @return a String representation of the number in binary
-     */
-    public static String toBinary(int n){
-        StringBuilder s = new StringBuilder();
-        while(n > 0){
-            s.insert(0, n % 2);
-            n /= 2;
-        }
-        while(s.length()<6)
-            s.insert(0, "0");
-        return s.toString();
-    }
-
-    /**
-     * Gets the current time in New York.
-     * @return the current time in New York.
-     */
-    private static LocalTime getTime(){
-        return LocalTime.now(java.time.ZoneId.of("America/New_York"));
-    }
-
-    /**
-     * Updates the clock to the current time based on the {@link BinaryClock#getTime()} method.
+     * Updates the clock to the current time based on the current time in New York.
      */
     public void tick(){
-        LocalTime time = getTime();
+        LocalTime time = LocalTime.now(java.time.ZoneId.of("America/New_York"));
         second = time.getSecond();
         minute = time.getMinute();
         hour = time.getHour();
@@ -61,16 +36,20 @@ public class BinaryClock {
     }
 
     /**
-     * Converts a {@code char[]} of 0's and 1's to a {@code boolean[]}.
-     * @param arr the {@code char[]} to convert
-     * @return a {@code boolean[]} representation of the {@code char[]}
+     * Converts a {@code String} of 0's and 1's to a {@code boolean[]}.
+     * @param str the {@code String} to convert
+     * @return a {@code boolean[]} representation of the {@code String}
      */
-    public static boolean[] toBinaryArray(char[] arr){
-        boolean[] b = new boolean[arr.length];
-        for(int i = 0; i < arr.length; i++)
-            b[i] = arr[i] == '1';
-
-        return b;
+    public static boolean[] toBinaryArray(String str){
+        StringBuilder sb = new StringBuilder(str);
+        while(sb.length() < 6) {
+            sb.insert(0, "0");
+        }
+        str = sb.toString();
+        boolean[] arr = new boolean[6];
+        for(int i = 0; i < 6; i++)
+            arr[i] = str.charAt(i) == '1';
+        return arr;
     }
     // getters (no setters because update method already does that)
     public int getHour(){

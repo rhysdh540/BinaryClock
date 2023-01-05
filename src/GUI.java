@@ -1,36 +1,71 @@
 import javax.swing.*;
 import java.awt.*;
-import java.lang.Thread;
 
 public class GUI {
-    @SuppressWarnings("FieldMayBeFinal")
-    private Panel panel = new Panel();
-    @SuppressWarnings("FieldMayBeFinal")
-    private JFrame gooey = new JFrame("Binary Clock");
-
-    public GUI() {
+    public GUI(){
+        JFrame gooey = new JFrame("Binary Clock");
         Image icon = Toolkit.getDefaultToolkit().getImage("src/icon.png");
         try { // set image
             Taskbar.getTaskbar().setIconImage(icon);
         } catch (UnsupportedOperationException e) { // if not on macos, try the windows method
             gooey.setIconImage(icon);
         } catch (SecurityException e) {
-            System.err.println("There was a security exception for: 'Taskbar.setIconImage'");
+            System.err.println("There was a security exception for: 'taskbar.setIconImage'");
         }
-        // create the menu bar toggles
+        Panel panel = new Panel();
+
+        // this is all for adding the menu bar toggles
         {
             JMenuBar mb = new JMenuBar(); // create the menu bar
+
+            JCheckBoxMenuItem toggleDecimalClock = new JCheckBoxMenuItem("Show Decimal Clock", panel.isDecimalShown());
+            toggleDecimalClock.addActionListener(e -> {
+                panel.toggleDecimal();
+                PrefsSaver.writePrefs(panel);
+            });
+
+            JCheckBoxMenuItem lightdark = new JCheckBoxMenuItem("Dark Mode", panel.isDarkMode());
+            lightdark.addActionListener(e -> {
+                panel.toggleDarkMode();
+                PrefsSaver.writePrefs(panel);
+            });
+
+            JCheckBoxMenuItem flipBinary = new JCheckBoxMenuItem("Flip Binary Clock", panel.isBinaryFlipped());
+            flipBinary.addActionListener(e -> {
+                panel.toggleBinaryFlip();
+                PrefsSaver.writePrefs(panel);
+            });
+
+            JCheckBoxMenuItem flipDecimal = new JCheckBoxMenuItem("Flip Decimal Clock", panel.isDecimalFlipped());
+            flipDecimal.addActionListener(e -> {
+                panel.toggleDecimalFlip();
+                PrefsSaver.writePrefs(panel);
+            });
+
+            JCheckBoxMenuItem clock12hr = new JCheckBoxMenuItem("12 Hour Clock", panel.isClock12hr());
+            clock12hr.addActionListener(e -> {
+                panel.toggleClock12hr();
+                PrefsSaver.writePrefs(panel);
+            });
+
+            JCheckBoxMenuItem binText = new JCheckBoxMenuItem("Use 0's and 1's", panel.isTextBin());
+            binText.addActionListener(e -> {
+                panel.toggleBinText();
+                PrefsSaver.writePrefs(panel);
+            });
+
             // create the menus
             JMenu clockMenu = new JMenu("Clock");
             JMenu appearanceMenu = new JMenu("Appearance");
 
-            // create the buttons
-            createJCheckBoxMenuItem("Show Decimal Clock", appearanceMenu);
-            createJCheckBoxMenuItem("Dark Mode", appearanceMenu);
-            createJCheckBoxMenuItem("Flip Binary Clock", appearanceMenu);
-            createJCheckBoxMenuItem("Move Decimal Clock to Right Corner", appearanceMenu);
-            createJCheckBoxMenuItem("12 Hour Clock", clockMenu);
-            createJCheckBoxMenuItem("Use 0's and 1's", appearanceMenu);
+            // add the buttons to the menus
+            appearanceMenu.add(toggleDecimalClock);
+            appearanceMenu.add(lightdark);
+            appearanceMenu.add(flipBinary);
+            appearanceMenu.add(flipDecimal);
+            appearanceMenu.add(binText);
+            clockMenu.add(clock12hr);
+
             // add the menus to the main bar
             mb.add(appearanceMenu);
             mb.add(clockMenu);
@@ -38,29 +73,11 @@ public class GUI {
         }
 
         // stuff that must be done (or else)
-        gooey.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        Dimension size = new Dimension(854, 480);
+        gooey.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Dimension size = new Dimension(854, 480); // dont ask why this is so specific
         gooey.setSize(size);
         gooey.setMinimumSize(size);
         gooey.getContentPane().add(panel);
         gooey.setVisible(true);
-    }
-
-    public void createJCheckBoxMenuItem(String name, JMenu menu) {
-        if(panel.prefs.get(name) == null){
-            System.err.println("Unrecognized Preference Name in File. This means your file might be corrupted!\nResetting the file to default preferences...");
-            PrefsSaver.writePrefs(PrefsSaver.defaultSettings());
-            System.out.println("Preferences Reset. Resetting Program. This may throw an exception.");
-            new Thread(GUI::new).start();
-            Thread.currentThread().interrupt();
-            return;
-        }
-        JCheckBoxMenuItem checkbox = new JCheckBoxMenuItem(name, panel.prefs.get(name));
-        checkbox.addActionListener(e -> {
-                    panel.prefs.put(name, !panel.prefs.get(name));
-                    PrefsSaver.writePrefs(panel.prefs);
-                }
-        );
-        menu.add(checkbox);
     }
 }

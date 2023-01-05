@@ -17,7 +17,7 @@ public class PrefsSaver {
     /**
      * The file to which the preferences are written and saved.
      */
-    private static final File PREFS_FILE_PATH = new File(System.getProperty("user.home") + File.separator + ".rdhbinaryclock" + File.separator + "prefs.txt");
+    private static final File PREFS_FILE = new File(System.getProperty("user.home") + File.separator + ".rdhbinaryclock" + File.separator + "prefs.txt");
 
     /**
      * Don't let anyone instantiate this class.
@@ -29,32 +29,29 @@ public class PrefsSaver {
     /**
      * Updates the file with a HashMap
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void writePrefs(HashMap<String,Boolean> preferences){
-        FileWriter out = null;
+        FileWriter out;
         try {
-            out = new FileWriter(PREFS_FILE_PATH, false);
+            out = new FileWriter(PREFS_FILE, false);
         } catch (FileNotFoundException e) {
-            System.err.println("File Not Found. Attempting to fix...");
-            try {
-                makeFile();
-                out = new FileWriter(PREFS_FILE_PATH, false);
-            } catch (FileNotFoundException e1) {
-                System.err.println("File Still Not Found:");
-                e1.printStackTrace();
-            } catch (IOException e1) {
-                System.err.println("I/O Exception:");
-                e1.printStackTrace();
+            if(PREFS_FILE.isDirectory()){
+                System.err.println("The file is a directory. Attempting to delete it...");
+                PREFS_FILE.delete();
+            } else {
+                System.err.println("File Not Found. Attempting to fix...");
             }
+            makeFile();
+            writePrefs(defaultSettings());
+            return;
         } catch (IOException e) {
-            System.err.println("I/O Exception:");
-            e.printStackTrace();
+            System.err.println("There was an error creating the file. Please check your permissions for the directory and try again.\n" + PREFS_FILE.getAbsolutePath());
+            PREFS_FILE.setWritable(true);
+            throw new RuntimeException(e);
         }
-        assert out != null;
         try {
-            for (Map.Entry<String,Boolean> mapElement : preferences.entrySet()) {
-                String key = mapElement.getKey();
-                boolean value = mapElement.getValue();
-                out.write(key+"\n"+value+"\n");
+            for (Map.Entry<String,Boolean> mapElement : preferences.entrySet()) { // prints the preferences (name followed by value) to the file
+                out.write(mapElement.getKey() + "\n" + mapElement.getValue() + "\n");
             }
             out.close();
         } catch(IOException e) {
@@ -70,7 +67,7 @@ public class PrefsSaver {
     public static HashMap<String,Boolean> readPrefs(){
         HashMap<String,Boolean> preferences = new HashMap<>();
         try{
-            Scanner scanner = new Scanner(new FileReader(PREFS_FILE_PATH));
+            Scanner scanner = new Scanner(new FileReader(PREFS_FILE));
             String key,value;
                 while(scanner.hasNextLine()) {
                     key = scanner.nextLine();
@@ -81,10 +78,10 @@ public class PrefsSaver {
         } catch (FileNotFoundException e) {
             System.out.println("File Not Found. Implementing a Save File");
             makeFile();
-        } catch(NoSuchElementException e) {
-        System.err.println("File Corrupted! Using Default Preferences ");
-        preferences = defaultSettings();
-    }
+        } catch (NoSuchElementException e) {
+            System.err.println("File Corrupted! Using Default Preferences");
+            preferences = defaultSettings();
+        }
         if(preferences.size() == 0) {
             preferences = defaultSettings();
         }
@@ -97,9 +94,9 @@ public class PrefsSaver {
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private static void makeFile() {
-        PREFS_FILE_PATH.getParentFile().mkdirs();
+        PREFS_FILE.getParentFile().mkdirs();
         try {
-            PREFS_FILE_PATH.createNewFile();
+            PREFS_FILE.createNewFile();
         } catch (IOException e) {
             System.err.println("File Failed to be Created");
         }

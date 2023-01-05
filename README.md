@@ -1,4 +1,4 @@
-# Binary Clock
+# Binary Clock (legacy)
 
 project for ap computer science (shocking)
 

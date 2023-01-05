@@ -1,11 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
+import java.lang.Thread;
 
 public class GUI {
-    Panel panel = new Panel();
+    @SuppressWarnings("FieldMayBeFinal")
+    private Panel panel = new Panel();
+    @SuppressWarnings("FieldMayBeFinal")
+    private JFrame gooey = new JFrame("Binary Clock");
 
     public GUI() {
-        JFrame gooey = new JFrame("Binary Clock");
         Image icon = Toolkit.getDefaultToolkit().getImage("src/icon.png");
         try { // set image
             Taskbar.getTaskbar().setIconImage(icon);
@@ -35,7 +38,7 @@ public class GUI {
         }
 
         // stuff that must be done (or else)
-        gooey.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gooey.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         Dimension size = new Dimension(854, 480);
         gooey.setSize(size);
         gooey.setMinimumSize(size);
@@ -45,7 +48,11 @@ public class GUI {
 
     public void createJCheckBoxMenuItem(String name, JMenu menu) {
         if(panel.prefs.get(name) == null){
-            System.err.println("Unrecognized Preference Name in File. Skipping menu box\nThis means your file might be corrupted!");
+            System.err.println("Unrecognized Preference Name in File. This means your file might be corrupted!\nResetting the file to default preferences...");
+            PrefsSaver.writePrefs(PrefsSaver.defaultSettings());
+            System.out.println("Preferences Reset. Resetting Program. This may throw an exception.");
+            new Thread(GUI::new).start();
+            Thread.currentThread().interrupt();
             return;
         }
         JCheckBoxMenuItem checkbox = new JCheckBoxMenuItem(name, panel.prefs.get(name));

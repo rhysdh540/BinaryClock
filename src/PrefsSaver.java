@@ -31,30 +31,24 @@ public class PrefsSaver {
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void writePrefs(HashMap<String,Boolean> preferences){
-        FileWriter out = null;
+        FileWriter out;
         try {
             out = new FileWriter(PREFS_FILE, false);
-        } catch (FileNotFoundException e) { // TODO: this always runs even though the file very clearly exists
-            System.err.println("File Not Found. Attempting to fix...");
+        } catch (FileNotFoundException e) {
+            if(PREFS_FILE.isDirectory()){
+                System.err.println("The file is a directory. Attempting to delete it...");
+                PREFS_FILE.delete();
+            } else {
+                System.err.println("File Not Found. Attempting to fix...");
+            }
             makeFile();
+            writePrefs(defaultSettings());
             return;
         } catch (IOException e) {
-            if(PREFS_FILE.isDirectory()) {
-                System.err.println("There was a directory with the file's name! Attempting to fix...");
-                PREFS_FILE.delete();
-                makeFile();
-            } if(!PREFS_FILE.canWrite()){
-                System.err.println("The file is not writable! Attempting to fix...");
-                PREFS_FILE.setWritable(true);
-                System.err.println("File now should be writable. Check just in case, though!\nFile: " + PREFS_FILE.getAbsolutePath());
-                return;
-            } else {
-                System.err.println("There was an IOException. Please report this to the developer.");
-                e.printStackTrace();
-                System.exit(1);
-            }
+            System.err.println("There was an error creating the file. Please check your permissions for the directory and try again.\n" + PREFS_FILE.getAbsolutePath());
+            PREFS_FILE.setWritable(true);
+            throw new RuntimeException(e);
         }
-        assert out != null; // just in case it somehow slipped through my mess of try-catches back there
         try {
             for (Map.Entry<String,Boolean> mapElement : preferences.entrySet()) { // prints the preferences (name followed by value) to the file
                 out.write(mapElement.getKey() + "\n" + mapElement.getValue() + "\n");

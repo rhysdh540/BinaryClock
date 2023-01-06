@@ -103,8 +103,7 @@ public class Panel extends JPanel{
             sb.append(m).append(":");
             if(s<10) sb.append("0");
             sb.append(s);
-            if(pm) sb.append(" PM");
-            else sb.append(" AM");
+            sb.append(pm ? " PM" : " AM");
         } else {
             if(h<10) sb.append("0");
             sb.append(h).append(":");

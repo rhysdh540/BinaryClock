@@ -1,5 +1,8 @@
 import java.time.LocalTime;
 
+/**
+ * A fairly basic binary clock class, contains the time as ints, the time in binary, and methods to update them.
+ */
 public class BinaryClock {
     private boolean[] seconds = new boolean[6];
     private boolean[] minutes = new boolean[6];

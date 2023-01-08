@@ -5,6 +5,7 @@ import java.util.HashMap;
 public class Panel extends JPanel{
     // preferences for how the clock is displayed
     HashMap<String,Boolean> prefs;
+    // whether or not the time is after noon
     private boolean pm = false;
     private static final Font SFPRO = new Font("SF Pro", Font.PLAIN, 20);
     private static final Font MONO = new Font("JetBrains Mono NL", Font.PLAIN, 20);
@@ -14,7 +15,7 @@ public class Panel extends JPanel{
     /**
      * the clock
      */
-    @SuppressWarnings("FieldMayBeFinal") // shut up
+    @SuppressWarnings("FieldMayBeFinal")
     private BinaryClock clock = new BinaryClock();
     public Panel(){
         prefs = PrefsSaver.readPrefs();
@@ -39,7 +40,7 @@ public class Panel extends JPanel{
         for (int i = -1; i < 3; i++) {
             for (int j = -3; j < 3; j++) {
                 boolean[] line = new boolean[][]{clock.getHours(), clock.getMinutes(), clock.getSeconds(), null}[i + 1]; // decides which line to draw (i==-1: hours, i==0: minutes, i==1: seconds, i==2; not drawing so we don't care)
-                int y = getHeight() / 2 + (100 * i) - 50;
+                int y = getHeight() / 2 + (100 * i) - 50, x = getWidth() / 2 + (100 * j);
                 if(i == -1 && prefs.get("12 Hour Clock") && clock.getHour() >= 12){ // am/pm fix
                     line = BinaryClock.toBinaryArray(Integer.toBinaryString(clock.getHour()-12));
                     pm = true;
@@ -48,20 +49,20 @@ public class Panel extends JPanel{
                     g.setFont(SFPROBIG);
                     if (line[(prefs.get("Flip Binary Clock") ? 5 : 2*(j+3)) - (j + 3)]) { // if the bit is on, fill a circle/draw 1
                         if(prefs.get("Use 0's and 1's"))
-                            g.drawString("1", getWidth() / 2 + (100 * j)+5, y+25);
+                            g.drawString("1", x+5, y+25);
                         else
-                            g.fillOval(getWidth() / 2 + (100 * j), y, 30, 30);
+                            g.fillOval(x, y, 30, 30);
                     } else { // draw circle/draw 0
                         if(prefs.get("Use 0's and 1's"))
-                            g.drawString("0", getWidth() / 2 + (100 * j)+5, y+25);
+                            g.drawString("0", x+5, y+25);
                         else
-                            g.drawOval(getWidth() / 2 + (100 * j), y, 30, 30);
+                            g.drawOval(x, y, 30, 30);
                     }
                     g.setFont(SFPRO);
                     g.drawString((i == -1 ? "Hours" : (i == 0 ? "Minutes" : "Seconds")), getWidth() / 2 + 250, y+20); // draws the titles
                 } else { // add the line labels
                     g.setFont(SFPRO);
-                    g.drawString((int)Math.pow(2.0, (prefs.get("Flip Binary Clock") ? 2*(j+3) : 5) - (j + 3)) + "", getWidth() / 2 + (100 * j) + 7, y);
+                    g.drawString((int)Math.pow(2.0, (prefs.get("Flip Binary Clock") ? 2*(j+3) : 5) - (j + 3)) + "", x + 7, y);
                 }
             }
         }

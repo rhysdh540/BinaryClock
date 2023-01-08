@@ -87,11 +87,11 @@ public class PrefsSaver {
                 }
             sc.close();
         } catch (FileNotFoundException e) {
-            System.out.println("File Not Found. Implementing a Save File");
+            System.out.println("File Not Found. Implementing a Save File.");
             makeFile();
             writePrefs(DEFAULT_PREFS);
         } catch (NoSuchElementException e) { // unexpected element
-            System.err.println("File Corrupted! Using Default Preferences");
+            System.err.println("File Corrupted! Using Default Preferences.");
             preferences = DEFAULT_PREFS;
         }
         if(preferences.isEmpty()) {
@@ -105,7 +105,7 @@ public class PrefsSaver {
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private static void makeFile() {
-        PREFS_FILE.getParentFile().mkdirs();
+        PREFS_FILE.getParentFile().mkdirs(); // creates the directories that lead up to the file
         try {
             PREFS_FILE.createNewFile();
         } catch (IOException e) {

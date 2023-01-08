@@ -25,6 +25,7 @@ public class GUI {
 
             // create the buttons
             JCheckBoxMenuItem item = createJCheckBoxMenuItem("Move Decimal Clock to Right Corner");
+            // this is so we can disable the "move decimal clock" button if the decimal clock itself is disabled
             appearanceMenu.add(createJCheckBoxMenuItem("Show Decimal Clock", e -> {
                 panel.prefs.put("Show Decimal Clock", !panel.prefs.get("Show Decimal Clock"));
                 PrefsSaver.writePrefs(panel.prefs);
@@ -32,6 +33,7 @@ public class GUI {
             }));
             createJCheckBoxMenuItem("Dark Mode", appearanceMenu);
             createJCheckBoxMenuItem("Flip Binary Clock", appearanceMenu);
+            // add the move decimal clock button in the right place
             appearanceMenu.add(item);
             createJCheckBoxMenuItem("12 Hour Clock", clockMenu);
             createJCheckBoxMenuItem("Use 0's and 1's", appearanceMenu);
@@ -42,7 +44,7 @@ public class GUI {
         }
 
         // stuff that must be done (or else)
-        gooey.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        gooey.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // dispose on close superiority
         Dimension size = new Dimension(854, 480);
         gooey.setSize(size);
         gooey.setMinimumSize(size);
@@ -50,19 +52,29 @@ public class GUI {
         gooey.setVisible(true);
     }
 
+    /**
+     * Creates a {@code JCheckBoxMenuItem} with the given text and adds it to the given menu.
+     * @param name the text of the {@code JCheckBoxMenuItem} (and therefore also the name of the preference that it changes)
+     * @param menu the {@code JMenu} to add the {@code JCheckBoxMenuItem} to
+     * @throws NullPointerException if the given menu is null or if the given preference name doesn't exist
+     */
     public void createJCheckBoxMenuItem(String name, JMenu menu) {
-        JCheckBoxMenuItem item = createJCheckBoxMenuItem(name, e -> {
-            panel.prefs.put(name, !panel.prefs.get(name));
-            PrefsSaver.writePrefs(panel.prefs);
-        });
-        menu.add(item);
+        menu.add(createJCheckBoxMenuItem(name));
     }
+
+    /**
+     * Creates a {@code JCheckBoxMenuItem} with the given text and action.
+     * @param name the text of the {@code JCheckBoxMenuItem}
+     * @param l the action that the button performs
+     * @return the {@code JCheckBoxMenuItem} that was created (or null if the preference wasn't found)
+     */
     public JCheckBoxMenuItem createJCheckBoxMenuItem(String name, ActionListener l) {
         if(panel.prefs.get(name) == null){
             System.err.println("Unrecognized Preference Name in File. This means your file might be corrupted!\nResetting the file to default preferences...");
-            PrefsSaver.writePrefs(PrefsSaver.defaultSettings());
+            PrefsSaver.writePrefs(PrefsSaver.DEFAULT_PREFS);
             System.out.println("Preferences Reset. Resetting Program. This may throw an exception.");
-            //starts a new thread with a new program and ends the current one
+            // starts a new thread with a new program and ends the current one
+            // it throws a nullpointerexception (idk why, i think its because it returns null) but it works fine
             new Thread(GUI::new).start();
             Thread.currentThread().interrupt();
             return null;
@@ -71,6 +83,12 @@ public class GUI {
         checkbox.addActionListener(l);
         return checkbox;
     }
+
+    /**
+     * Creates a {@code JCheckBoxMenuItem} with the given text.
+     * @param name the text of the {@code JCheckBoxMenuItem} (and the name of the preference that it changes)
+     * @return the {@code JCheckBoxMenuItem} that was created (or null if the preference wasn't found)
+     */
     public JCheckBoxMenuItem createJCheckBoxMenuItem(String name) {
         return createJCheckBoxMenuItem(name, e -> {
             panel.prefs.put(name, !panel.prefs.get(name));

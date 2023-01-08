@@ -18,6 +18,17 @@ public class PrefsSaver {
      * The file to which the preferences are written and saved.
      */
     private static final File PREFS_FILE = new File(System.getProperty("user.home") + File.separator + ".rdhbinaryclock" + File.separator + "prefs.txt");
+    /**
+     * The default preferences to use if the file doesn't exist or is corrupted.
+     */
+    public static final HashMap<String, Boolean> DEFAULT_PREFS = new HashMap<>(Map.of(
+            "Show Decimal Clock",false,
+            "Dark Mode"         ,true,
+            "Flip Binary Clock" ,false,
+            "Move Decimal Clock to Right Corner",false,
+            "12 Hour Clock"     ,false,
+            "Use 0's and 1's"   ,false
+    ));
 
     /**
      * Don't let anyone instantiate this class.
@@ -27,34 +38,36 @@ public class PrefsSaver {
     }
 
     /**
-     * Updates the file with a HashMap
+     * Updates the file with a HashMap.
+     * @param preferences the HashMap to write to the file
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void writePrefs(HashMap<String,Boolean> preferences){
         FileWriter out;
-        try {
+        try { // try to create the writer
             out = new FileWriter(PREFS_FILE, false);
-        } catch (FileNotFoundException e) {
-            if(PREFS_FILE.isDirectory()){
+        } catch (FileNotFoundException e) { // if not found
+            if(PREFS_FILE.isDirectory()){ // if there's a directory with the same name as the file
                 System.err.println("The file is a directory. Attempting to delete it...");
                 PREFS_FILE.delete();
-            } else {
+            } else { // otherwise the file doesn't exist
                 System.err.println("File Not Found. Attempting to fix...");
             }
+            // create the file with default preferences
             makeFile();
-            writePrefs(defaultSettings());
+            writePrefs(DEFAULT_PREFS);
             return;
-        } catch (IOException e) {
-            System.err.println("There was an error creating the file. Please check your permissions for the directory and try again.\n" + PREFS_FILE.getAbsolutePath());
+        } catch (IOException e) { // if there's an IO exception, probably a permissions error
+            System.err.println("\033[31mThere was an error creating the file. Please check your permissions for the directory and try again.\n\033[37m" + PREFS_FILE.getAbsolutePath() + "\033[0m");
             PREFS_FILE.setWritable(true);
             throw new RuntimeException(e);
         }
         try {
-            for (Map.Entry<String,Boolean> mapElement : preferences.entrySet()) { // prints the preferences (name followed by value) to the file
+            for (Map.Entry<String, Boolean> mapElement : preferences.entrySet()) { // prints the preferences (name followed by value) to the file
                 out.write(mapElement.getKey() + "\n" + mapElement.getValue() + "\n");
             }
             out.close();
-        } catch(IOException e) {
+        } catch(IOException e) { // something unexpected happened
             System.err.println("Saving Preferences Failed! :(");
             e.printStackTrace();
         }
@@ -67,25 +80,23 @@ public class PrefsSaver {
     public static HashMap<String,Boolean> readPrefs(){
         HashMap<String,Boolean> preferences = new HashMap<>();
         try{
-            Scanner scanner = new Scanner(new FileReader(PREFS_FILE));
-            String key,value;
-                while(scanner.hasNextLine()) {
-                    key = scanner.nextLine();
-                    value = scanner.nextLine();
-                    preferences.put(key, Boolean.parseBoolean(value));
+            Scanner sc = new Scanner(new FileReader(PREFS_FILE));
+                while(sc.hasNextLine()) {
+                    // transform the lines into a HashMap
+                    preferences.put(sc.nextLine(), Boolean.parseBoolean(sc.nextLine()));
                 }
-            scanner.close();
+            sc.close();
         } catch (FileNotFoundException e) {
             System.out.println("File Not Found. Implementing a Save File");
             makeFile();
-        } catch (NoSuchElementException e) {
+            writePrefs(DEFAULT_PREFS);
+        } catch (NoSuchElementException e) { // unexpected element
             System.err.println("File Corrupted! Using Default Preferences");
-            preferences = defaultSettings();
+            preferences = DEFAULT_PREFS;
         }
-        if(preferences.size() == 0) {
-            preferences = defaultSettings();
+        if(preferences.isEmpty()) {
+            preferences = DEFAULT_PREFS;
         }
-        writePrefs(preferences);
         return preferences;
     }
 
@@ -100,20 +111,5 @@ public class PrefsSaver {
         } catch (IOException e) {
             System.err.println("File Failed to be Created");
         }
-    }
-
-    /**
-     * Returns a hash map with the default settings
-     * @return a hash map with the default settings
-     */
-    public static HashMap<String,Boolean> defaultSettings(){
-        HashMap<String,Boolean> prefs = new HashMap<>();
-        prefs.put("Show Decimal Clock",false);
-        prefs.put("Dark Mode",true);
-        prefs.put("Flip Binary Clock",false);
-        prefs.put("Move Decimal Clock to Right Corner",false);
-        prefs.put("12 Hour Clock",false);
-        prefs.put("Use 0's and 1's",false);
-        return prefs;
     }
 }

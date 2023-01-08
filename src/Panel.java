@@ -38,20 +38,20 @@ public class Panel extends JPanel{
         // there's a lot of weird math in this part, but its just to make sure the clock is centered (and other parts are right/left-aligned)
         for (int i = -1; i < 3; i++) {
             for (int j = -3; j < 3; j++) {
-                boolean[] line = (i == -1 ? clock.getHours() : (i == 0 ? clock.getMinutes() : clock.getSeconds())); // decides which line to draw
+                boolean[] line = new boolean[][]{clock.getHours(), clock.getMinutes(), clock.getSeconds(), null}[i + 1]; // decides which line to draw (i==-1: hours, i==0: minutes, i==1: seconds, i==2; not drawing so we don't care)
                 int y = getHeight() / 2 + (100 * i) - 50;
                 if(i == -1 && prefs.get("12 Hour Clock") && clock.getHour() >= 12){ // am/pm fix
                     line = BinaryClock.toBinaryArray(Integer.toBinaryString(clock.getHour()-12));
                     pm = true;
                 }
-                if(i!=2) { // draw the clock grid
+                if(line != null) { // draw the clock grid
                     g.setFont(SFPROBIG);
-                    if (line[(prefs.get("Flip Binary Clock") ? 5 : 2*(j+3)) - (j + 3)]) {
+                    if (line[(prefs.get("Flip Binary Clock") ? 5 : 2*(j+3)) - (j + 3)]) { // if the bit is on, fill a circle/draw 1
                         if(prefs.get("Use 0's and 1's"))
                             g.drawString("1", getWidth() / 2 + (100 * j)+5, y+25);
                         else
                             g.fillOval(getWidth() / 2 + (100 * j), y, 30, 30);
-                    } else {
+                    } else { // draw circle/draw 0
                         if(prefs.get("Use 0's and 1's"))
                             g.drawString("0", getWidth() / 2 + (100 * j)+5, y+25);
                         else
@@ -59,7 +59,7 @@ public class Panel extends JPanel{
                     }
                     g.setFont(SFPRO);
                     g.drawString((i == -1 ? "Hours" : (i == 0 ? "Minutes" : "Seconds")), getWidth() / 2 + 250, y+20); // draws the titles
-                } else{ // add the line labels
+                } else { // add the line labels
                     g.setFont(SFPRO);
                     g.drawString((int)Math.pow(2.0, (prefs.get("Flip Binary Clock") ? 2*(j+3) : 5) - (j + 3)) + "", getWidth() / 2 + (100 * j) + 7, y);
                 }
@@ -84,20 +84,17 @@ public class Panel extends JPanel{
         // Update the screen
         repaint();
     }
-
+    // guess what this method does (hint: it returns a String representation of the current time)
     /**
      * Returns a String representation of the current time.
      * @return a String representation of the current time.
      */
     public String makeClock(){
         StringBuilder sb = new StringBuilder();
-        int h = clock.getHour();
-        int m = clock.getMinute();
-        int s = clock.getSecond();
+        int h = clock.getHour(), m = clock.getMinute(), s = clock.getSecond();
 
         if(prefs.get("12 Hour Clock")){
-            if(pm && h!=12) h -= 12;
-            if(h == 0) h = 12;
+            h = (pm && h != 12 ? h-12 : (h == 0 ? 12 : h)); // pm fix
             sb.append(h).append(":");
             if(m<10) sb.append("0");
             sb.append(m).append(":");

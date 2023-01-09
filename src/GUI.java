@@ -6,6 +6,8 @@ import java.lang.Thread;
 public class GUI {
     @SuppressWarnings("FieldMayBeFinal")
     private Panel panel = new Panel();
+
+    @SuppressWarnings("UnusedLabel")
     public GUI() {
         JFrame gooey = new JFrame("Binary Clock");
         Image icon = Toolkit.getDefaultToolkit().getImage("src/icon.png");
@@ -25,6 +27,7 @@ public class GUI {
 
             // create the buttons
             JCheckBoxMenuItem item = createJCheckBoxMenuItem("Move Decimal Clock to Right Corner");
+            item.setEnabled(panel.prefs.get("Show Decimal Clock"));
             // this is so we can disable the "move decimal clock" button if the decimal clock itself is disabled
             appearanceMenu.add(createJCheckBoxMenuItem("Show Decimal Clock", e -> {
                 panel.prefs.put("Show Decimal Clock", !panel.prefs.get("Show Decimal Clock"));
@@ -37,6 +40,7 @@ public class GUI {
             appearanceMenu.add(item);
             createJCheckBoxMenuItem("12 Hour Clock", clockMenu);
             createJCheckBoxMenuItem("Use 0's and 1's", appearanceMenu);
+            createJCheckBoxMenuItem("SEIZURE MODE", appearanceMenu);
             // add the menus to the main bar
             mb.add(appearanceMenu);
             mb.add(clockMenu);

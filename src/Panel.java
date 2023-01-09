@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
+import java.util.function.Supplier;
 
 public class Panel extends JPanel{
     // preferences for how the clock is displayed
@@ -10,26 +11,27 @@ public class Panel extends JPanel{
     private static final Font SFPRO = new Font("SF Pro", Font.PLAIN, 20);
     private static final Font MONO = new Font("JetBrains Mono NL", Font.PLAIN, 20);
     private static final Font SFPROBIG = new Font("SF Pro", Font.PLAIN, 40);
-
-
+    private static Color seizure = new Color(0, 0, 0);
     /**
      * the clock
      */
     @SuppressWarnings("FieldMayBeFinal")
     private BinaryClock clock = new BinaryClock();
+
     public Panel(){
         prefs = PrefsSaver.readPrefs();
     }
-
     public void paint(Graphics g){
         //setup
+        updateColor();
         super.paintComponent(g);
-        setBackground(prefs.get("Dark Mode") ? Color.black : Color.white);
-        g.setColor(prefs.get("Dark Mode") ? Color.white : Color.black);
+        setBackground(prefs.get("SEIZURE MODE") ? seizure : (prefs.get("Dark Mode") ? Color.black : Color.white));
+        g.setColor(prefs.get("Dark Mode") && !prefs.get("SEIZURE MODE") ? Color.white : Color.black);
         g.setFont(MONO);
 
         if(SwingUtilities.isDescendingFrom(this, KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow()))
             clock.tick(); // update the clock only if the window is in focus to save memory (this barely does anything since the screen still constantly updates anyway)
+
         if(prefs.get("Show Decimal Clock")) { // draw the decimal clock (if applicable)
             // decides how much to offset the clock
             int amount = (prefs.get("Move Decimal Clock to Right Corner") ? getWidth() - (prefs.get("12 Hour Clock") ? (makeClock().length() == 11 ? 135 : 125) : 105) : 10);
@@ -111,5 +113,13 @@ public class Panel extends JPanel{
             sb.append(s);
         }
         return sb.toString();
+    }
+
+    /**
+     * Changes the values of {@code seizure} to random values between 0 and 255. (link tag for instance variables doesn't work for some reason)
+     */
+    private void updateColor(){
+        Supplier<Integer> randColor = () -> (int)(Math.random()*255);
+        seizure = new Color(randColor.get(), randColor.get(), randColor.get());
     }
 }

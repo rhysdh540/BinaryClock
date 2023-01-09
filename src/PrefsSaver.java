@@ -27,7 +27,8 @@ public class PrefsSaver {
             "Flip Binary Clock" ,false,
             "Move Decimal Clock to Right Corner",false,
             "12 Hour Clock"     ,false,
-            "Use 0's and 1's"   ,false
+            "Use 0's and 1's"   ,false,
+            "SEIZURE MODE",      false
     ));
 
     /**

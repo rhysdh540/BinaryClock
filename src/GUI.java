@@ -40,7 +40,7 @@ public class GUI {
             appearanceMenu.add(item);
             createJCheckBoxMenuItem("12 Hour Clock", clockMenu);
             createJCheckBoxMenuItem("Use 0's and 1's", appearanceMenu);
-            createJCheckBoxMenuItem("SEIZURE MODE", appearanceMenu);
+            createJCheckBoxMenuItem("RAVE MODE", appearanceMenu);
             // add the menus to the main bar
             mb.add(appearanceMenu);
             mb.add(clockMenu);

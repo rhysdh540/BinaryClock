@@ -11,7 +11,7 @@ public class Panel extends JPanel{
     private static final Font SFPRO = new Font("SF Pro", Font.PLAIN, 20);
     private static final Font MONO = new Font("JetBrains Mono NL", Font.PLAIN, 20);
     private static final Font SFPROBIG = new Font("SF Pro", Font.PLAIN, 40);
-    private static Color seizure = new Color(0, 0, 0);
+    private static Color rave = new Color(0, 0, 0);
     /**
      * the clock
      */
@@ -25,8 +25,8 @@ public class Panel extends JPanel{
         //setup
         updateColor();
         super.paintComponent(g);
-        setBackground(prefs.get("SEIZURE MODE") ? seizure : (prefs.get("Dark Mode") ? Color.black : Color.white));
-        g.setColor(prefs.get("Dark Mode") && !prefs.get("SEIZURE MODE") ? Color.white : Color.black);
+        setBackground(prefs.get("RAVE MODE") ? rave : (prefs.get("Dark Mode") ? Color.black : Color.white));
+        g.setColor(prefs.get("Dark Mode") && !prefs.get("RAVE MODE") ? Color.white : Color.black);
         g.setFont(MONO);
 
         if(SwingUtilities.isDescendingFrom(this, KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow()))
@@ -116,10 +116,10 @@ public class Panel extends JPanel{
     }
 
     /**
-     * Changes the values of {@code seizure} to random values between 0 and 255. (link tag for instance variables doesn't work for some reason)
+     * Changes the values of {@code rave} to random values between 0 and 255. (link tag for instance variables doesn't work for some reason)
      */
     private void updateColor(){
         Supplier<Integer> randColor = () -> (int)(Math.random()*255);
-        seizure = new Color(randColor.get(), randColor.get(), randColor.get());
+        rave = new Color(randColor.get(), randColor.get(), randColor.get());
     }
 }

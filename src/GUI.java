@@ -10,7 +10,7 @@ public class GUI {
     @SuppressWarnings("UnusedLabel")
     public GUI() {
         JFrame gooey = new JFrame("Binary Clock");
-        Image icon = Toolkit.getDefaultToolkit().getImage("src/icon.png");
+        Image icon = Toolkit.getDefaultToolkit().getImage("src/resources/icon.png");
         try { // set image
             Taskbar.getTaskbar().setIconImage(icon);
         } catch (UnsupportedOperationException e) { // if not on macos, try the windows method

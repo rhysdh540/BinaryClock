@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
-import java.util.function.Supplier;
 
 public class Panel extends JPanel{
     // preferences for how the clock is displayed
@@ -11,7 +10,7 @@ public class Panel extends JPanel{
     private static final Font SFPRO = new Font("SF Pro", Font.PLAIN, 20);
     private static final Font MONO = new Font("JetBrains Mono NL", Font.PLAIN, 20);
     private static final Font SFPROBIG = new Font("SF Pro", Font.PLAIN, 40);
-    private static Color rave = new Color(0, 0, 0);
+    private static Color rave = new Color(0);
     /**
      * the clock
      */
@@ -119,7 +118,7 @@ public class Panel extends JPanel{
      * Changes the values of {@code rave} to random values between 0 and 255. (link tag for instance variables doesn't work for some reason)
      */
     private void updateColor(){
-        Supplier<Integer> randColor = () -> (int)(Math.random()*255);
+        java.util.function.Supplier<Integer> randColor = () -> (int)(Math.random()*255);
         rave = new Color(randColor.get(), randColor.get(), randColor.get());
     }
 }

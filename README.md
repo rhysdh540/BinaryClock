@@ -2,6 +2,8 @@
 
 project for ap computer science (shocking)
 
+## EPILEPSY WARNING IF YOU CHOOSE TOR TURN ON RAVE MODE
+
 JDK: azul zulu 19.0.1 (tested as far back as 11)
 
 icon credit (because i was told to):<br>

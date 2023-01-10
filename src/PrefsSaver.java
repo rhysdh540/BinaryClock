@@ -39,9 +39,9 @@ public class PrefsSaver {
 //            return;
 //        }
         PrintWriter out = null;
-        try {
+        try { // try to create the writer
             out = new PrintWriter(new BufferedWriter(new FileWriter(PREFS_FILE_PATH, false)));
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) { // if not found
             System.err.println("File Not Found. Attempting to fix...");
             try {
                 makeFile();
@@ -57,6 +57,7 @@ public class PrefsSaver {
             System.err.println("I/O Exception:");
             e.printStackTrace();
         }
+        // make sure stuff works then write preferences
         assert out != null;
         out.println(clock12hr);
         out.println(darkMode);
@@ -72,10 +73,6 @@ public class PrefsSaver {
      *    <code>Clock 12 hour mode, Dark mode, Decimal Clock Shown, Decimal Clock Flipped, Binary Clock Flipped, Binary Clock uses 0's and 1's</code>
      */
     private static boolean[] readPrefs(){
-//        if(System.getProperty("os.name").toLowerCase().contains("windows")) {
-//            System.err.println("PrefsSaver is not supported on Windows.");
-//            return new boolean[]{false, true, false, false, false, false};
-//        }
         boolean[] prefs = new boolean[6];
         try{
             BufferedReader in = new BufferedReader(new FileReader(PREFS_FILE_PATH));
@@ -98,8 +95,7 @@ public class PrefsSaver {
         } catch (IOException e) {
             System.err.println("I/O Exception:");
             e.printStackTrace();
-        } // save the prefs to the file immediately so if the user doesn't change anything it doesn't break
-        writePrefs(prefs[0], prefs[1], prefs[2], prefs[3], prefs[4], prefs[5]);
+        }
         return prefs;
     }
 
@@ -111,6 +107,7 @@ public class PrefsSaver {
     private static void makeFile() throws IOException {
         PREFS_FILE_PATH.getParentFile().mkdirs();
         PREFS_FILE_PATH.createNewFile();
+        writePrefs(false, true, false, false, false, false);
     }
     // getters from the file
     public static boolean getClock12hr(){

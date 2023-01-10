@@ -13,5 +13,10 @@ also includes preferences that save to a file, the directory is `[user home fold
 
 ye
 
-![wow such funny](./src/resources/haha_funny_meme.png)
+![me working with files:](./src/resources/haha_funny_meme.png)
 
+#### credits:
+- me (for existing)
+- sam (for hashmaps)
+- connor (for rave mode idea)
+- random stackoverflow answers (for a lot of things)

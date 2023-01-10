@@ -41,7 +41,7 @@ public class Panel extends JPanel{
                 boolean[] line = new boolean[][]{clock.getHours(), clock.getMinutes(), clock.getSeconds(), null}[i + 1]; // decides which line to draw (i==-1: hours, i==0: minutes, i==1: seconds, i==2; not drawing so we don't care)
                 int y = getHeight() / 2 + (100 * i) - 50, x = getWidth() / 2 + (100 * j);
                 if(i == -1 && prefs.get("12 Hour Clock") && clock.getHour() >= 12){ // am/pm fix
-                    line = BinaryClock.toBinaryArray(Integer.toBinaryString(clock.getHour()-12));
+                    line = BinaryClock.toBinaryArray(clock.getHour()-12);
                     pm = true;
                 }
                 if(line != null) { // draw the clock grid

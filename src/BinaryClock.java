@@ -23,9 +23,9 @@ public class BinaryClock {
      * Updates the {@code boolean[]} variables to use the values provided by the {@code int} variables.
      */
     private void update(){
-        seconds = toBinaryArray(toBinaryString(second));
-        minutes = toBinaryArray(toBinaryString(minute));
-        hours = toBinaryArray(toBinaryString(hour));
+        seconds = toBinaryArray(second);
+        minutes = toBinaryArray(minute);
+        hours = toBinaryArray(hour);
     }
     /**
      * Updates the clock to the current time based on the current time in New York.
@@ -39,35 +39,17 @@ public class BinaryClock {
     }
 
     /**
-     * Converts a {@code String} of 0's and 1's to a {@code boolean[]}.
-     * @param str the {@code String} to convert
-     * @return a {@code boolean[]} representation of the {@code String}
+     * Converts an {@code int} of in base 10 to a {@code boolean[]} representation of it in base 2 (binary).<br><br>
+     * {@code String.format("%6s", Integer.toBinaryString(i)).replace(' ', '0')} converts the {@code int} to a {@code String} in base 2 and pad the front with '0's.
+     * <br><br>
+     * @param i the {@code int} to convert
+     * @return a {@code boolean[]} representation of the {@code int}
      */
-    public static boolean[] toBinaryArray(String str){
-        StringBuilder sb = new StringBuilder(str);
-        while(sb.length() < 6) {
-            sb.insert(0, "0");
-        }
-        str = sb.toString();
+    public static boolean[] toBinaryArray(int i){
         boolean[] arr = new boolean[6];
-        for(int i = 0; i < 6; i++)
-            arr[i] = str.charAt(i) == '1';
+        for(int x = 0; x < 6; x++)
+            arr[x] = String.format("%6s", Integer.toBinaryString(i)).replace(' ', '0').charAt(x) == '1';
         return arr;
-    }
-
-    /**
-     * Returns a string representation of the integer argument in base&nbsp;2
-     * @param i an integer to be converted to a string.
-     * @return the string representation of the unsigned integer value represented by the argument in binary (base&nbsp;2).
-     */
-    public static String toBinaryString(int i){
-        if(i == 0) return "0";
-        StringBuilder sb = new StringBuilder();
-        while(i != 0){
-            sb.insert(0, i % 2);
-            i /= 2;
-        }
-        return sb.toString();
     }
     // getters (no setters because update method already does that)
     public int getHour(){

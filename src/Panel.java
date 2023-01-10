@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Panel extends JPanel{
     // preferences for how the clock is displayed
-    HashMap<String,Boolean> prefs;
+    HashMap<String,Boolean> prefs = PrefsSaver.readPrefs();
     // whether or not the time is after noon
     private boolean pm = false;
     private static final Font SFPRO = new Font("SF Pro", Font.PLAIN, 20);
@@ -17,9 +17,6 @@ public class Panel extends JPanel{
     @SuppressWarnings("FieldMayBeFinal")
     private BinaryClock clock = new BinaryClock();
 
-    public Panel(){
-        prefs = PrefsSaver.readPrefs();
-    }
     public void paint(Graphics g){
         //setup
         updateColor();

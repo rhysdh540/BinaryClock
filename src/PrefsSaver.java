@@ -104,7 +104,7 @@ public class PrefsSaver {
     /**
      * Creates the file if it doesn't exist.
      */
-    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @SuppressWarnings("ResultOfMethodCallIgnored") // we dont need to know the return value since if the file already exists nothing should happen
     private static void makeFile() {
         PREFS_FILE.getParentFile().mkdirs(); // creates the directories that lead up to the file
         try {

@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.HashMap;
 
 public class Panel extends JPanel{
@@ -7,9 +8,9 @@ public class Panel extends JPanel{
     HashMap<String,Boolean> prefs = PrefsSaver.readPrefs();
     // whether or not the time is after noon
     private boolean pm = false;
-    private static final Font SFPRO = new Font("SF Pro", Font.PLAIN, 20);
-    private static final Font MONO = new Font("JetBrains Mono NL", Font.PLAIN, 20);
-    private static final Font SFPROBIG = new Font("SF Pro", Font.PLAIN, 40);
+    private static final Font SFPRO = createFont("SFPro", 20);
+    private static final Font MONO = createFont("JetBrainsMono", 20);
+    private static final Font SFPROBIG = createFont("SFPro", 40);
     private static Color rave = new Color(0);
     /**
      * the clock
@@ -117,5 +118,13 @@ public class Panel extends JPanel{
     private void updateColor(){
         java.util.function.Supplier<Integer> randColor = () -> (int)(Math.random()*255);
         rave = new Color(randColor.get(), randColor.get(), randColor.get());
+    }
+    private static Font createFont(String filename, int size) {
+        try {
+            return Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/" + filename + ".ttf")).deriveFont(Font.PLAIN, size);
+        } catch (Exception e) {
+            System.err.println("Failed to initialize font!");
+            throw new RuntimeException(e);
+        }
     }
 }

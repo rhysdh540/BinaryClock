@@ -23,9 +23,9 @@ public class BinaryClock {
      * Updates the {@code boolean[]} variables to use the values provided by the {@code int} variables.
      */
     private void update(){
-        seconds = toBinaryArray(Integer.toBinaryString(second));
-        minutes = toBinaryArray(Integer.toBinaryString(minute));
-        hours = toBinaryArray(Integer.toBinaryString(hour));
+        seconds = toBinaryArray(toBinaryString(second));
+        minutes = toBinaryArray(toBinaryString(minute));
+        hours = toBinaryArray(toBinaryString(hour));
     }
     /**
      * Updates the clock to the current time based on the current time in New York.
@@ -53,6 +53,21 @@ public class BinaryClock {
         for(int i = 0; i < 6; i++)
             arr[i] = str.charAt(i) == '1';
         return arr;
+    }
+
+    /**
+     * Returns a string representation of the integer argument in base&nbsp;2
+     * @param i an integer to be converted to a string.
+     * @return the string representation of the unsigned integer value represented by the argument in binary (base&nbsp;2).
+     */
+    public static String toBinaryString(int i){
+        if(i == 0) return "0";
+        StringBuilder sb = new StringBuilder();
+        while(i != 0){
+            sb.insert(0, i % 2);
+            i /= 2;
+        }
+        return sb.toString();
     }
     // getters (no setters because update method already does that)
     public int getHour(){

@@ -13,4 +13,8 @@ ye
 
 basically just the last commit before sam started to do stuff
 
-worked about the same as it does not (but less optimized, prefs probably were broken, and a lot of backend changes have happened since then)
+worked about the same as it does no2 (but less optimized and a lot of backend changes have happened since then)
+
+credits:
+- me
+- stackoverflow

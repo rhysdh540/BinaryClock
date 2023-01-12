@@ -72,16 +72,17 @@ public class GUI {
      * @param l the action that the button performs
      * @return the {@code JCheckBoxMenuItem} that was created (or null if the preference wasn't found)
      */
+    @SuppressWarnings("deprecation")
     public JCheckBoxMenuItem createJCheckBoxMenuItem(String name, ActionListener l) {
         if(panel.prefs.get(name) == null){
             System.err.println("Unrecognized Preference Name in File. This means your file might be corrupted!\nResetting the file to default preferences...");
             PrefsSaver.writePrefs(PrefsSaver.DEFAULT_PREFS);
-            System.out.println("Preferences Reset. Resetting Program. This may throw an exception.");
+            System.out.println("Preferences Reset. Restarting Program...");
             // starts a new thread with a new program and ends the current one
-            // it throws a nullpointerexception (idk why, i think its because it returns null) but it works fine
             new Thread(GUI::new).start();
-            Thread.currentThread().interrupt();
-            return null;
+            Thread.currentThread().stop();
+            // I know that Thread.stop is very unsafe and can cause problems and such but I don't think that my program is so complex that I will have multiple threads accessing the same objects, so it's fine
+            // Why not use Thread.interrupt? because then the code below would still run and throw a NullPointerException
         }
         JCheckBoxMenuItem checkbox = new JCheckBoxMenuItem(name, panel.prefs.get(name));
         checkbox.addActionListener(l);

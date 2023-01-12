@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.util.HashMap;
 
 public class Panel extends JPanel{
@@ -20,11 +19,12 @@ public class Panel extends JPanel{
 
     public void paint(Graphics g){
         //setup
-        updateColor();
-        super.paintComponent(g);
+        if(prefs.get("RAVE MODE"))
+            updateColor();
         setBackground(prefs.get("RAVE MODE") ? rave : (prefs.get("Dark Mode") ? Color.black : Color.white));
         g.setColor(prefs.get("Dark Mode") && !prefs.get("RAVE MODE") ? Color.white : Color.black);
         g.setFont(MONO);
+        super.paintComponent(g);
 
         if(SwingUtilities.isDescendingFrom(this, KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow()))
             clock.tick(); // update the clock only if the window is in focus to save memory (this barely does anything since the screen still constantly updates anyway)
@@ -113,7 +113,7 @@ public class Panel extends JPanel{
     }
 
     /**
-     * Changes the values of {@code rave} to random values between 0 and 255. (link tag for instance variables doesn't work for some reason)
+     * Changes the values of {@link #rave} to random values between 0 and 255.
      */
     private void updateColor(){
         java.util.function.Supplier<Integer> randColor = () -> (int)(Math.random()*255);
@@ -121,7 +121,7 @@ public class Panel extends JPanel{
     }
     private static Font createFont(String filename, int size) {
         try {
-            return Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/" + filename + ".ttf")).deriveFont(Font.PLAIN, size);
+            return Font.createFont(Font.TRUETYPE_FONT, new java.io.File("src/resources/" + filename + ".ttf")).deriveFont(Font.PLAIN, size);
         } catch (Exception e) {
             System.err.println("Failed to initialize font!");
             throw new RuntimeException(e);

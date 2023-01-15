@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
+import java.util.function.Supplier;
 
 public class Panel extends JPanel{
     // preferences for how the clock is displayed
@@ -10,7 +11,7 @@ public class Panel extends JPanel{
     private static final Font SFPRO = createFont("SFPro", 20);
     private static final Font MONO = createFont("JetBrainsMono", 20);
     private static final Font SFPROBIG = createFont("SFPro", 40);
-    private static Color rave = new Color(0);
+    private static final Supplier<Color> rave = () -> new Color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255));
     /**
      * the clock
      */
@@ -19,9 +20,7 @@ public class Panel extends JPanel{
 
     public void paint(Graphics g){
         //setup
-        if(prefs.get("RAVE MODE"))
-            updateColor();
-        setBackground(prefs.get("RAVE MODE") ? rave : (prefs.get("Dark Mode") ? Color.black : Color.white));
+        setBackground(prefs.get("RAVE MODE") ? rave.get() : (prefs.get("Dark Mode") ? Color.black : Color.white));
         g.setColor(prefs.get("Dark Mode") && !prefs.get("RAVE MODE") ? Color.white : Color.black);
         g.setFont(MONO);
         super.paintComponent(g);
@@ -110,14 +109,6 @@ public class Panel extends JPanel{
             sb.append(s);
         }
         return sb.toString();
-    }
-
-    /**
-     * Changes the values of {@link #rave} to random values between 0 and 255.
-     */
-    private void updateColor(){
-        java.util.function.Supplier<Integer> randColor = () -> (int)(Math.random()*255);
-        rave = new Color(randColor.get(), randColor.get(), randColor.get());
     }
     private static Font createFont(String filename, int size) {
         try {

@@ -70,13 +70,12 @@ public class PrefsSaver {
             out.close();
         } catch(IOException e) { // something unexpected happened
             System.err.println("Saving Preferences Failed! :(");
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
     }
     /**
      * Reads the preferences from the file.
-     * @return A HashMap representing the preferences. The order is as follows:<br>
-     *    <code>Clock 12 hour mode, Dark mode, Decimal Clock Shown, Decimal Clock Flipped, Binary Clock Flipped, Binary Clock uses 0's and 1's</code>
+     * @return A {@code HashMap} representing the preferences: the key is the name of the preference, and the value is the state of the preference.
      */
     public static HashMap<String,Boolean> readPrefs(){
         HashMap<String,Boolean> preferences = new HashMap<>();

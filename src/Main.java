@@ -2,10 +2,15 @@ import javax.swing.UIManager;
 
 public class Main {
     public static void main(String[] args) {
+        new GUI();
+    }
+
+    /*
+     * This code block executes before the main method and sets the swing "look and feel" of the program to the operating system's default (or at least something that looks nice on the os)
+     */
+    static {
         try {
-            if(System.getProperty("os.name").toLowerCase().contains("mac")) {
-                // do macos stuff to make the thing look better
-                // note that this must be done BEFORE any swing code
+            if(System.getProperty("os.name").toLowerCase().contains("mac")) { // On macOS, we can take advantage of the fact that the system has its own menu bar and use that instead of one in our window.
                 System.setProperty("apple.laf.useScreenMenuBar", "true");
                 System.setProperty("apple.awt.application.name", "BinaryClock");
                 System.setProperty("apple.awt.application.appearance", "system");
@@ -18,6 +23,5 @@ public class Main {
             System.err.println("Error with Loading Custom UI!");
             e.printStackTrace(System.err);
         }
-        new GUI();
     }
 }

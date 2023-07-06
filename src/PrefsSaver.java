@@ -17,7 +17,7 @@ public class PrefsSaver {
     /**
      * The file to which the preferences are written and saved.
      */
-    private static final File PREFS_FILE = new File(System.getProperty("user.home") + File.separator + ".rdh" + File.separator + "binaryclock" + File.separator + "prefs.txt");
+    private static final File PREFS_FILE = new File(System.getProperty("user.home") + "/.rdh/binaryclock/prefs.txt".replace("/", File.separator));
     /**
      * The default preferences to use if the file doesn't exist or is corrupted.
      */

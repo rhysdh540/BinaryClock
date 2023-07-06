@@ -43,7 +43,7 @@ public class PrefsSaver {
      * @param preferences the HashMap to write to the file
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static void writePrefs(HashMap<String,Boolean> preferences){
+    public static void writePrefs(HashMap<String, Boolean> preferences){
         FileWriter out;
         try { // try to create the writer
             out = new FileWriter(PREFS_FILE, false);
@@ -77,8 +77,8 @@ public class PrefsSaver {
      * Reads the preferences from the file.
      * @return A {@code HashMap} representing the preferences: the key is the name of the preference, and the value is the state of the preference.
      */
-    public static HashMap<String,Boolean> readPrefs(){
-        HashMap<String,Boolean> preferences = new HashMap<>();
+    public static HashMap<String, Boolean> readPrefs(){
+        HashMap<String, Boolean> preferences = new HashMap<>();
         try{
             Scanner sc = new Scanner(new FileReader(PREFS_FILE));
                 while(sc.hasNextLine()) {
@@ -94,6 +94,7 @@ public class PrefsSaver {
             System.err.println("File Corrupted! Using Default Preferences.");
             preferences = DEFAULT_PREFS;
         }
+
         if(preferences.isEmpty()) {
             preferences = DEFAULT_PREFS;
         }
@@ -106,6 +107,7 @@ public class PrefsSaver {
     @SuppressWarnings("ResultOfMethodCallIgnored") // we dont need to know the return value since if the file already exists nothing should happen
     private static void makeFile() {
         PREFS_FILE.getParentFile().mkdirs(); // creates the directories that lead up to the file
+
         try {
             PREFS_FILE.createNewFile();
         } catch (IOException e) {
